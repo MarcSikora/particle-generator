@@ -1,0 +1,12 @@
+.Checkbox {
+    display: flex;
+    align-items: center;
+}
+
+.Checkbox--input {
+    margin-top: 5px;
+    margin-left: 10px;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}

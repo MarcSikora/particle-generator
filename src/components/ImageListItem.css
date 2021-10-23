@@ -1,0 +1,19 @@
+
+.ImageListItem--img {
+    background-color: transparent;
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+}
+
+.ImageListItem--img-selected {
+    background-color: #675bc7;
+    width: 32px;
+    height: 32px;
+    margin: 0 5px;
+}
+
+.ImageListItem--img:hover {
+    background-color: #575474;
+    cursor: pointer;
+}

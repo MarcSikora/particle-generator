@@ -24,7 +24,7 @@ export class Display extends Component {
     draw()
     {
         this.ctx.fillStyle = this.props.properties.backgroundColor;
-        this.ctx.fillRect(10, 10, 200, 300)
+        this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height)
     }
 
     resize()

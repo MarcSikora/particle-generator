@@ -11,9 +11,7 @@ export class App extends Component
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 		this.state = {
-			properties: {
-				backgroundColor: "red"
-			}
+			properties: {}
 		}
 	}
 
