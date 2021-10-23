@@ -1,0 +1,15 @@
+.ColorPicker {
+    display: flex;
+    align-items: center;
+}
+
+.ColorPicker--input {
+    background: transparent;
+    padding: 0;
+    margin-top: 2px;
+    margin-left: 10px;
+    border: none;
+    width: 64px;
+    height: 32px;
+    cursor: pointer;
+}

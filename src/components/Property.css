@@ -1,0 +1,13 @@
+.Property {
+    color: white;
+    margin: 5px 10px;
+}
+
+.Property--label {
+    font-weight: bold;
+}
+
+.Property--content {
+    margin: 10px;
+    font-size: 10pt;
+}
