@@ -19,7 +19,7 @@ export class ColorPicker extends Component {
     render() {
         return (
             <div className="ColorPicker">
-                <label>Color: </label>
+                <label>{this.props.label}</label>
                 <input className="ColorPicker--input" type="color" onChange={this.handleChange}></input>
             </div>
         )

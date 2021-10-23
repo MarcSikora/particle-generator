@@ -19,7 +19,7 @@ export class Checkbox extends Component {
     render() {
         return (
             <div className="Checkbox">
-                <label>Transparent: </label>
+                <label>{this.props.label}</label>
                 <input className="Checkbox--input" type="checkbox" onChange={this.handleChange}></input>
             </div>
         )

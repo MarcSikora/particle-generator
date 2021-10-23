@@ -14,3 +14,8 @@ body {
   flex: 1;
   display: flex;
 }
+
+label {
+  width: 105px;
+  /* text-align: right; */
+}

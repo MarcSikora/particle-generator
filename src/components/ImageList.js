@@ -19,13 +19,20 @@ export class ImageList extends Component {
     render() {
         return (
             <div className="ImageList">
-                <label>Shape: </label>
+                <label>{this.props.label}</label>
                 <div className="ImageList--content">
                     {
                         this.props.items.map((item, i) => {
-                            let isSelected = (i == this.state.value);
+                            let isSelected = (i === this.state.value);
                             return (
-                                <ImageListItem key={item.id} id={item.id} src={item.src} alt={item.caption} selected={isSelected} onClick={this.handleChange}></ImageListItem>
+                                <ImageListItem 
+                                    key={item.id} 
+                                    id={item.id} 
+                                    src={item.src} 
+                                    alt={item.caption} 
+                                    selected={isSelected} 
+                                    onClick={this.handleChange}
+                                ></ImageListItem>
                             )
                         })
                     }

@@ -1,9 +1,11 @@
 .Checkbox {
     display: flex;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .Checkbox--input {
+    display: block;
     margin-top: 5px;
     margin-left: 10px;
     width: 16px;

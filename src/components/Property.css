@@ -1,6 +1,8 @@
 .Property {
     color: white;
-    margin: 5px 10px;
+    margin: 10px 10px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
     border-bottom: 1px solid rgb(88, 88, 88);
 }
 

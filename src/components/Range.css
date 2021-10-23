@@ -1,0 +1,108 @@
+.Range {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.Range--inputContainer {
+    display: flex;
+}
+
+.Range--value {
+    width: 30px;
+    text-align: center;
+    padding: 3px 10px;
+    margin-left: 10px;
+    background-color: #403d58;
+}
+
+.Range--input {
+    display: block;
+    cursor: pointer;
+    background-color: transparent;
+    margin-top: 4px;
+    margin-left: 10px;
+    height: 20px;
+    -webkit-appearance: none;
+}
+
+.Range--input:focus {
+    outline: none;
+}
+.Range--input::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    background: white;
+    border-radius: 0px;
+    border: 0px solid #000000;
+}
+.Range--input::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 25px;
+    width: 10px;
+    border-radius: 0px;
+    background: #675BC7;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -9px;
+}
+.Range--input:focus::-webkit-slider-runnable-track {
+    background: white;
+}
+.Range--input::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: white;
+    border-radius: 0px;
+    border: 0px solid #000000;
+}
+.Range--input::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 25px;
+    width: 10px;
+    border-radius: 0px;
+    background: #675BC7;
+    cursor: pointer;
+}
+.Range--input::-ms-track {
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: white;
+    border-color: white;
+    color: white;
+}
+.Range--input::-ms-fill-lower {
+    background: white;
+    border: 0px solid #000000;
+    border-radius: 0px;
+
+}
+.Range--input::-ms-fill-upper {
+    background: white;
+    border: 0px solid #000000;
+    border-radius: 0px;
+}
+.Range--input::-ms-thumb {
+    margin-top: 1px;
+    box-shadow: 0px 0px 0px #000000;
+    border: 0px solid #000000;
+    height: 25px;
+    width: 10px;
+    border-radius: 0px;
+    background: #675BC7;
+    cursor: pointer;
+}
+.Range--input:focus::-ms-fill-lower {
+    background: white;
+}
+.Range--input:focus::-ms-fill-upper {
+    background: white;
+}
