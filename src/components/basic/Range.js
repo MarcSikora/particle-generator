@@ -11,7 +11,7 @@ export class Range extends Component {
 
     handleChange(e)
     {
-        const value = e.target.value;
+        const value = parseFloat(e.target.value);
         this.props.onChange(this.props.inputName, value);
         this.setState({ value: value });
     }
