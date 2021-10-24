@@ -4,6 +4,8 @@ import Checkbox from '../basic/Checkbox'
 import ImageList from '../basic/ImageList'
 import Range from '../basic/Range'
 import squareImg from '../../assets/square.png'
+import circleImg from '../../assets/circle.png'
+import triangleImg from '../../assets/triangle.png'
 
 export class Source extends Component {
     constructor(props)
@@ -17,12 +19,12 @@ export class Source extends Component {
             },
             {
                 id: 1,
-                src: squareImg,
+                src: circleImg,
                 caption: "square"
             },
             {
                 id: 2,
-                src: squareImg,
+                src: triangleImg,
                 caption: "square"
             },
         ];
@@ -40,6 +42,11 @@ export class Source extends Component {
         return (
             <Property label="Source">
                 <Checkbox 
+                    label="Hidden: "
+                    inputName="isHidden" 
+                    onChange={this.handleChange}>
+                </Checkbox>
+                <Checkbox 
                     label="Transparent: "
                     inputName="isTransparent" 
                     onChange={this.handleChange}>
@@ -53,7 +60,7 @@ export class Source extends Component {
                 <Range 
                     label="Scale:"
                     min="1"
-                    step="1"
+                    step="0.5"
                     max="16"
                     inputName="scale" 
                     onChange={this.handleChange}>

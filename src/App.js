@@ -11,18 +11,40 @@ export class App extends Component
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 		this.state = {
-			properties: {}
+			properties: {
+				background: {
+					color: "#000"
+				},
+				source: {
+					x: 800, 
+					y: 400,
+					isTransparent: false,
+					isHidden: false,
+					shape: 0,
+					scale: 1
+				},
+				particles: {
+					amount: 1
+				},
+				particle: {
+					shape: 0,
+					color: "#fff",
+					scale: 1,
+					lifespan: 1,
+					emissionColor: "#fff",
+					emissionRadius: 1
+				}
+			}
 		}
 	}
 
-	handleChange(name, value)
+	handleChange(propertyName, inputName, value)
 	{
-		console.log(name, value);
 		this.setState(state => {
 			const p = state.properties;
-			p[name] = value;
+			p[propertyName][inputName] = value;
 			return {properies: p}
-		})
+		}, console.log(this.state.properties))
 	}
 
 	render()
