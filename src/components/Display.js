@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Display.css'
+import Particle from '../Particle'
 
 export class Display extends Component {
     constructor(props)
@@ -12,17 +13,20 @@ export class Display extends Component {
         this.sett = this.props.properties;
         this.defaultSize = 32;
         this.particles = [];
+        this.shapeAreaPoints = [];
     }
 
     componentDidMount()
     {
         this.ctx = this.canvas.current.getContext("2d");
         this.resize();
+        this.particles = this.generateParticles();
         this.draw();
     }
 
     componentDidUpdate()
     {
+        this.particles = this.generateParticles();
         this.draw();
     }
     
@@ -35,6 +39,19 @@ export class Display extends Component {
             this.drawSource();
 
         this.drawParticles();
+    }
+
+    generateParticles()
+    {
+        let arr = [];
+
+        for(let i = 0; i < this.sett.particles.amount; i++)
+        {
+            let particle = new Particle(100, 100, this.sett.particle.scale);
+            arr.push(particle);
+        }
+
+        return arr;
     }
 
     drawSource()
@@ -91,7 +108,14 @@ export class Display extends Component {
 
     drawParticles()
     {
+        this.ctx.fillStyle = this.sett.particle.color;
+        this.particles.forEach(p => {
+            const size = p.size * p.scale;
 
+            this.ctx.beginPath();
+            this.ctx.rect(p.x - size*0.5, p.y - size*0.5, size, size);
+            this.ctx.fill();
+        });
     }
 
     clear()

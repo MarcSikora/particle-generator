@@ -55,7 +55,7 @@ export class Particle extends Component {
                     min="1"
                     step="1"
                     max="16"
-                    inputName="size" 
+                    inputName="scale" 
                     onChange={this.handleChange}>
                 </Range>
                 <Range 
