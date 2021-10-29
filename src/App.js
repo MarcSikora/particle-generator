@@ -44,7 +44,7 @@ export class App extends Component
 			const p = state.properties;
 			p[propertyName][inputName] = value;
 			return {properies: p}
-		}, console.log(this.state.properties))
+		})
 	}
 
 	render()
