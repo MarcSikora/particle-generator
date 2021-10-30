@@ -25,8 +25,6 @@ export class Display extends Component {
         this.draw();
 
         this.time = Date.now();
-        this.particles = this.particles.push(this.generateParticles());
-
 
         window.requestAnimationFrame(() => this.animate());
     }
@@ -43,11 +41,12 @@ export class Display extends Component {
 
         if(elapsed > 1000)
         {
-            this.particles = this.particles.push(this.generateParticles());
+            this.particles.push(this.generateParticles());
             this.time = now;
         }
-        else if(elapsed % 100 == 0) {
-        }
+        // else if(elapsed % 100 == 0) {
+        //    this.particles.push(this.generateParticles());
+        // }
 
 
         for(let i = 0; i < this.particles.length; i++)
@@ -74,7 +73,9 @@ export class Display extends Component {
     {
         let i = this.particles.length;
         console.log(i)
-        return new Particle(this.points[i].x, this.points[i].y, this.sett.particle.scale, Math.random());
+        console.log(this.points)
+        let p = new Particle(this.points[i].x, this.points[i].y, this.sett.particle.scale);
+        return p;
     }
 
     drawSource()
