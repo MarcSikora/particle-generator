@@ -22,10 +22,12 @@ export class Display extends Component {
     {
         this.ctx = this.canvas.current.getContext("2d");
         this.resize();
-        this.time = Date.now();
-        console.log(this.time)
         this.draw();
-        this.particles = this.generateParticles();
+
+        this.time = Date.now();
+        this.particles = this.particles.push(this.generateParticles());
+
+
         window.requestAnimationFrame(() => this.animate());
     }
 
@@ -37,6 +39,16 @@ export class Display extends Component {
     animate()
     {
         let now = Date.now();
+        let elapsed = now - this.time;
+
+        if(elapsed > 1000)
+        {
+            this.particles = this.particles.push(this.generateParticles());
+            this.time = now;
+        }
+        else if(elapsed % 100 == 0) {
+        }
+
 
         for(let i = 0; i < this.particles.length; i++)
         {
@@ -60,15 +72,9 @@ export class Display extends Component {
 
     generateParticles()
     {
-        let arr = [];
-
-        for(let i = 0; i < this.sett.particles.amount; i++)
-        {
-            let particle = new Particle(this.points[i].x, this.points[i].y, this.sett.particle.scale, Math.random());
-            arr.push(particle);
-        }
-
-        return arr;
+        let i = this.particles.length;
+        console.log(i)
+        return new Particle(this.points[i].x, this.points[i].y, this.sett.particle.scale, Math.random());
     }
 
     drawSource()
