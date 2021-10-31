@@ -14,8 +14,12 @@ export class Display extends Component {
         this.sett = this.props.properties;
         this.defaultSize = 32;
         this.particles = [];
-        this.points = [];
+        this.bounds ={
+            min: { x: 0, y: 0},
+            max: { x: 0, y: 0}
+        }
         this.time = 0;
+        this.shape = new Path2D();
     }
 
     componentDidMount()
@@ -39,14 +43,11 @@ export class Display extends Component {
         let now = Date.now();
         let elapsed = now - this.time;
 
-        if(elapsed > 1000)
+        if(elapsed > this.sett.particles.amount*0.001)
         {
-            this.particles.push(this.generateParticles());
+            this.particles.push(this.generateParticle());
             this.time = now;
         }
-        // else if(elapsed % 100 == 0) {
-        //    this.particles.push(this.generateParticles());
-        // }
 
 
         for(let i = 0; i < this.particles.length; i++)
@@ -66,16 +67,14 @@ export class Display extends Component {
         if(!this.sett.source.isHidden)
             this.drawSource();
 
-        this.drawParticles();
+        // this.drawParticles();
     }
 
-    generateParticles()
+    generateParticle()
     {
-        let i = this.particles.length;
-        console.log(i)
-        console.log(this.points)
-        let p = new Particle(this.points[i].x, this.points[i].y, this.sett.particle.scale);
-        return p;
+        let point = this.getRandomPointInBounds();        
+        console.log(point)
+        return new Particle(point.x, point.y, this.sett.particle.scale);
     }
 
     drawSource()
@@ -87,7 +86,7 @@ export class Display extends Component {
 
         this.ctx.fillStyle = "#675bc7";
         this.ctx.strokeStyle = "cyan";
-        this.ctx.beginPath();
+        // this.ctx.beginPath();
 
         switch(this.sett.source.shape)
         {
@@ -106,49 +105,22 @@ export class Display extends Component {
         }
 
         if(!isTransparent)
-            this.ctx.fill();
-        this.ctx.stroke();
+            this.ctx.fill(this.shape);
+        this.ctx.stroke(this.shape);
 
         this.drawOrigin();
     }
 
     drawSquare(x, y, size)
     {
-        this.ctx.rect(x-size*0.5, y-size*0.5, size, size);
-        this.getSquarePoints(x, y, size);
-    }
-
-    getSquarePoints(x, y, size)
-    {
-        this.points = [];
-
-        for(let i = 0; i < this.sett.particles.amount; i++)
-            this.points.push({
-                x: Math.floor(Math.random() * size + x - size*0.5),
-                y: Math.floor(Math.random() * size + y - size*0.5)
-            });
+        this.shape.rect(x-size*0.5, y-size*0.5, size, size);
+        this.setBounds(x-size*0.5, y-size*0.5, x + size*0.5, y + size*0.5);
     }
 
     drawCircle(x, y, size)
     {
-        this.ctx.arc(x, y, size*0.5, 0, Math.PI*2);
-        this.getCirclePoints(x, y, size);
-    }
-
-    getCirclePoints(x, y, size)
-    {
-        let a = size / 1.4142;
-        this.points = [];
-
-        for(let i = 0; i < this.sett.particles.amount; i++)
-        {
-            let rp = this.getRandomPoint(x - size*0.5, size, y - size*0.5, size);
-            let d2 = Math.pow(rp.x - x, 2) + Math.pow(rp.y - y, 2);
-
-            if(d2 > Math.pow(size*0.5, 2))
-                rp = this.getRandomPoint(x - a*0.5, a, y - a*0.5, a);
-            this.points.push(rp);
-        }
+        this.shape.arc(x, y, size*0.5, 0, Math.PI*2);
+        this.setBounds(x-size*0.5, y-size*0.5, size, size);
     }
 
     drawTriangle(x, y, size)
@@ -167,25 +139,39 @@ export class Display extends Component {
             y: y - 2*h/3
         }
 
-        //drawing part
-        this.ctx.moveTo(p1.x, p1.y);
-        this.ctx.lineTo(p2.x, p2.y);
-        this.ctx.lineTo(p3.x, p3.y);
-        this.ctx.closePath();
+        this.shape.moveTo(p1.x, p1.y);
+        this.shape.lineTo(p2.x, p2.y);
+        this.shape.lineTo(p3.x, p3.y);
+        this.shape.closePath();
 
-        this.getTrianglePoints(x - size*0.5, x + size*0.5, Math.floor(p3.y), Math.floor(p1.y));
+        this.setBounds(x - size*0.5, x + size*0.5, Math.floor(p3.y), Math.floor(p1.y));
     }
 
-    getTrianglePoints(minX, maxX, minY, maxY)
+    setBounds(minX, maxX, minY, maxY)
     {
-        this.points = [];
-
-        while(this.points.length < this.sett.particles.amount)
-        {
-            let rp = this.getRandomPoint(minX, maxX - minX, minY, maxY - minY);
-            if(this.ctx.isPointInPath(rp.x, rp.y))
-                this.points.push(rp);
+        this.bounds = {
+            min: { x: minX, y: minY},
+            max: { x: maxX, y: maxY}
         }
+    }
+
+    getRandomPointInBounds()
+    {
+        let rp = null;
+
+        do
+        {
+            rp = this.getRandomPoint(
+                this.bounds.min.x, 
+                this.bounds.max.x - this.bounds.min.x, 
+                this.bounds.min.y, 
+                this.bounds.max.y - this.bounds.min.y
+            );
+            console.log(rp)
+    
+        } while(this.ctx.isPointInPath(rp.x, rp.y))
+
+        return rp;
     }
 
     getRandomPoint(minX, countX, minY, countY)
@@ -211,8 +197,6 @@ export class Display extends Component {
 
     drawParticles()
     {
-        // console.log("drawParticles")
-
         this.ctx.fillStyle = this.sett.particle.color;
 
         for(let i = 0; i < this.particles.length; i++)
