@@ -1,0 +1,14 @@
+.GithubLink {
+    background-color: white;
+    position: absolute;
+    padding: 10px;
+    bottom: 30px;
+    left: 30px;
+    border-radius: 10px;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.GithubLink:hover {
+    opacity: 1;
+}
