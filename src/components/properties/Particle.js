@@ -3,7 +3,8 @@ import Property from '../Property'
 import ColorPicker from '../basic/ColorPicker'
 import ImageList from '../basic/ImageList'
 import Range from '../basic/Range'
-import squareImg from '../../assets/square.png'
+import snowflake_01 from '../../assets/snowflake_01.png'
+import snowflake_02 from '../../assets/snowflake_02.png'
 
 export class Particle extends Component {
     constructor(props)
@@ -12,19 +13,14 @@ export class Particle extends Component {
         this.sourceShapes = [
             {
                 id: 0,
-                src: squareImg,
-                caption: "square"
+                src: snowflake_01,
+                caption: "snowflake_01"
             },
             {
                 id: 1,
-                src: squareImg,
-                caption: "square"
-            },
-            {
-                id: 2,
-                src: squareImg,
-                caption: "square"
-            },
+                src: snowflake_02,
+                caption: "snowflake_02"
+            }
         ];
 
         this.handleChange = this.handleChange.bind(this);
@@ -40,8 +36,8 @@ export class Particle extends Component {
         return (
             <Property label="Particle">
                 <ImageList 
-                    label="Shape:"
-                    inputName="shape" 
+                    label="Image:"
+                    inputName="image" 
                     onChange={this.handleChange} 
                     items={this.sourceShapes}>
                 </ImageList>
@@ -59,6 +55,14 @@ export class Particle extends Component {
                     onChange={this.handleChange}>
                 </Range>
                 <Range 
+                    label="Speed:"
+                    min="1"
+                    step="0.5"
+                    max="8"
+                    inputName="speed" 
+                    onChange={this.handleChange}>
+                </Range>
+                <Range 
                     label="Life span:"
                     min="0.1"
                     step="0.1"
@@ -73,7 +77,7 @@ export class Particle extends Component {
                 </ColorPicker>
                 <Range 
                     label="Emission radius:"
-                    min="1"
+                    min="0"
                     step="1"
                     max="30"
                     inputName="emissionRadius" 
