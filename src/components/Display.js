@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './Display.css'
 import Particle from '../Particle'
+import snowflake_01 from '../assets/snowflake_01.png';
+import snowflake_02 from '../assets/snowflake_02.png';
 
 export class Display extends Component {
     constructor(props)
@@ -19,74 +21,71 @@ export class Display extends Component {
             max: { x: 0, y: 0}
         }
         this.time = 0;
-        this.shape = new Path2D();
+        this.shape = null;
+        this.particleImg = new Image();
     }
 
     componentDidMount()
     {
         this.ctx = this.canvas.current.getContext("2d");
-        this.resize();
-        this.draw();
-
         this.time = Date.now();
 
+        this.resize();
+        this.generateShape();
+        this.prepareParticleImage();
+        this.draw();
         window.requestAnimationFrame(() => this.animate());
     }
 
     componentDidUpdate()
     {
+        this.generateShape();
+        this.prepareParticleImage();
         this.draw();
     }
 
     animate()
     {
-        let now = Date.now();
-        let elapsed = now - this.time;
-
-        if(elapsed > this.sett.particles.amount*0.001)
+        if(this.props.isRunning)
         {
-            this.particles.push(this.generateParticle());
-            this.time = now;
+            let now = Date.now();
+            let elapsed = now - this.time;
+
+            if(elapsed > 1000/this.sett.particles.amount)
+            {
+                this.particles.push(this.generateParticle());
+                this.time = now;
+            }
+
+            for(let i = 0; i < this.particles.length; i++)
+            {
+                this.particles[i].y += this.particles[i].speed;
+            }
+
+            this.draw();
         }
-
-
-        for(let i = 0; i < this.particles.length; i++)
-        {
-            this.particles[i].y++;
-        }
-
-        this.draw();
         window.requestAnimationFrame(() => this.animate());
     }
+
+
 
     draw()
     {
         this.ctx.fillStyle = this.sett.background.color;
         this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height);
 
+        this.drawParticles();
+
         if(!this.sett.source.isHidden)
             this.drawSource();
-
-        // this.drawParticles();
     }
 
-    generateParticle()
-    {
-        let point = this.getRandomPointInBounds();        
-        console.log(point)
-        return new Particle(point.x, point.y, this.sett.particle.scale);
-    }
-
-    drawSource()
+    generateShape() 
     {
         let x = this.sett.source.x;
         let y = this.sett.source.y;
         let size = this.defaultSize * this.sett.source.scale;
-        let isTransparent = this.sett.source.isTransparent;
-
-        this.ctx.fillStyle = "#675bc7";
-        this.ctx.strokeStyle = "cyan";
-        // this.ctx.beginPath();
+        this.shape = new Path2D();
 
         switch(this.sett.source.shape)
         {
@@ -103,6 +102,20 @@ export class Display extends Component {
                 console.log("Undefined shape")
                 break;
         }
+    }
+
+    generateParticle()
+    {
+        let point = this.getRandomPointInBounds();        
+        return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed);
+    }
+
+    drawSource()
+    {
+        let isTransparent = this.sett.source.isTransparent;
+
+        this.ctx.fillStyle = "#675bc7";
+        this.ctx.strokeStyle = "cyan";
 
         if(!isTransparent)
             this.ctx.fill(this.shape);
@@ -114,13 +127,13 @@ export class Display extends Component {
     drawSquare(x, y, size)
     {
         this.shape.rect(x-size*0.5, y-size*0.5, size, size);
-        this.setBounds(x-size*0.5, y-size*0.5, x + size*0.5, y + size*0.5);
+        this.setBounds(x-size*0.5, x+size*0.5, y-size*0.5, y+size*0.5);
     }
 
     drawCircle(x, y, size)
     {
         this.shape.arc(x, y, size*0.5, 0, Math.PI*2);
-        this.setBounds(x-size*0.5, y-size*0.5, size, size);
+        this.setBounds(x-size*0.5, x+size*0.5, y-size*0.5, y+size*0.5);
     }
 
     drawTriangle(x, y, size)
@@ -139,6 +152,7 @@ export class Display extends Component {
             y: y - 2*h/3
         }
 
+        
         this.shape.moveTo(p1.x, p1.y);
         this.shape.lineTo(p2.x, p2.y);
         this.shape.lineTo(p3.x, p3.y);
@@ -158,7 +172,6 @@ export class Display extends Component {
     getRandomPointInBounds()
     {
         let rp = null;
-
         do
         {
             rp = this.getRandomPoint(
@@ -167,9 +180,8 @@ export class Display extends Component {
                 this.bounds.min.y, 
                 this.bounds.max.y - this.bounds.min.y
             );
-            console.log(rp)
-    
-        } while(this.ctx.isPointInPath(rp.x, rp.y))
+        } while(!this.ctx.isPointInPath(this.shape, rp.x, rp.y))
+        
 
         return rp;
     }
@@ -197,22 +209,49 @@ export class Display extends Component {
 
     drawParticles()
     {
-        this.ctx.fillStyle = this.sett.particle.color;
 
         for(let i = 0; i < this.particles.length; i++)
         {
             let p = this.particles[i];
             let size = p.size * p.scale;
-            this.ctx.beginPath();
-            this.ctx.rect(p.x - size*0.5, p.y - size*0.5, size, size);
-            this.ctx.fill();;
+
+            this.drawEmission(p.x, p.y);
+
+            this.ctx.fillStyle = this.sett.particle.color;
+            // this.ctx.beginPath();
+            // this.ctx.rect(p.x - size*0.5, p.y - size*0.5, size, size);
+            // this.ctx.fill();
+            this.ctx.drawImage(this.particleImg, p.x - size*0.5, p.y - size*0.5, size, size)
         }
     }
 
-    clear()
+    drawEmission(x, y)
     {
-        this.ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.heigh);
+        let r = this.sett.particle.emissionRadius*4;
+        let gradient = this.ctx.createRadialGradient(x,y,0.5, x,y,r);
+
+        gradient.addColorStop(0.5, this.sett.particle.emissionColor);
+        gradient.addColorStop(1, this.hex2rgba(this.sett.particle.emissionColor, 0));
+
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(x-r, y-r, r*2, r*2);
     }
+
+    prepareParticleImage()
+    {
+        let imgs = [snowflake_01, snowflake_02];
+        this.particleImg.src = imgs[this.sett.particle.image];
+    }
+
+    hex2rgba(hex,alpha)
+    {
+        let rgb = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i,(m, r, g, b) => '#' + r + r + g + g + b + b)
+        .substring(1).match(/.{2}/g)
+        .map(x => parseInt(x, 16))
+
+        return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + alpha + ")";
+    }
+    
 
     resize()
     {
