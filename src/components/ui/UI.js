@@ -1,18 +1,31 @@
 import React, { Component } from 'react'
 import GithubLink from './GithubLink'
+import Info from './Info';
 import MainButtons from './MainButtons'
 
 export class UI extends Component {
     constructor(props)
     {
         super(props);
-        this.togglePlay = this.props.togglePlay;
+        this.state = {
+
+        }
+
+        this.toggleValue = this.props.toggleValue;
+        this.addParticleSystem = this.props.addParticleSystem;
     }
 
     render() {
         return (
             <div>
-                <MainButtons togglePlay={this.togglePlay}></MainButtons>
+                <MainButtons 
+                    toggleValue={this.toggleValue}
+                    addParticleSystem={this.addParticleSystem}
+                ></MainButtons>
+                <Info
+                    particleSystemsCount={this.props.particleSystemsCount}
+                    objectsCount={this.props.objectsCount}
+                ></Info>
                 <GithubLink></GithubLink>
             </div>
         )
