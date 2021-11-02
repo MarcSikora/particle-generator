@@ -10,16 +10,16 @@ export class Button extends Component {
 
     handleClick()
     {
-        console.log(this.props.text)
+        this.props.onClick();
     }
 
     render() {
         return (
-            <div className="Button"
+            <button className="Button"
                 onClick={this.handleClick}
             >
                 {this.props.text}
-            </div>
+            </button>
         )
     }
 }
