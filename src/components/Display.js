@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
 import './Display.css'
-import Particle from '../Particle'
-import snowflake_01 from '../assets/snowflake_01.png';
-import snowflake_02 from '../assets/snowflake_02.png';
 
 export class Display extends Component {
     constructor(props)
@@ -12,35 +9,39 @@ export class Display extends Component {
         this.canvas = React.createRef();
         this.display = React.createRef();
         this.ctx = null;
-        
-        this.sett = this.props.properties;
-        this.defaultSize = 32;
-        this.particles = [];
-        this.bounds ={
-            min: { x: 0, y: 0},
-            max: { x: 0, y: 0}
-        }
         this.time = 0;
-        this.shape = null;
-        this.particleImg = new Image();
-    }
+        this.grabbed = -1;
+        this.grabbedOffset = {
+            x: 20,
+            y: 30
+        }
 
+        this.handleMouseMove = this.handleMouseMove.bind(this);
+        this.handleMouseDown = this.handleMouseDown.bind(this);
+        this.handleMouseUp = this.handleMouseUp.bind(this);
+    }
+    
     componentDidMount()
     {
         this.ctx = this.canvas.current.getContext("2d");
         this.time = Date.now();
-
         this.resize();
-        this.generateShape();
-        this.prepareParticleImage();
+
+        this.props.particleSystems.forEach(ps => {
+            ps.generateShape(this.ctx);
+            ps.prepareParticleImage();
+        });
+        
         this.draw();
         window.requestAnimationFrame(() => this.animate());
     }
 
     componentDidUpdate()
     {
-        this.generateShape();
-        this.prepareParticleImage();
+        this.props.particleSystems.forEach(ps => {
+            ps.generateShape(this.ctx);
+            ps.prepareParticleImage();
+        });
         this.draw();
     }
 
@@ -51,207 +52,123 @@ export class Display extends Component {
             let now = Date.now();
             let elapsed = now - this.time;
 
-            if(elapsed > 1000/this.sett.particles.amount)
-            {
-                this.particles.push(this.generateParticle());
-                this.time = now;
-            }
+            let particlesCount = 0;
 
-            for(let i = 0; i < this.particles.length; i++)
-            {
-                this.particles[i].y += this.particles[i].speed;
-            }
+            this.props.particleSystems.forEach(ps => {
 
+                if(elapsed > 1000/ps.sett.particles.amount)
+                {
+                    ps.particles.push(ps.generateParticle());
+                    this.time = now;
+                    particlesCount += ps.particles.length;
+                }
+
+                let toRemove = [];
+
+                for(let i = 0; i < ps.particles.length; i++)
+                {
+                    ps.particles[i].y -= ps.particles[i].speed;
+                    if(ps.particles[i].y < 0 || ps.particles[i].y > this.canvas.current.height)
+                        toRemove.push(i);
+                }
+
+                toRemove.forEach(i => ps.particles.splice(i, 1));        
+            });
+            // if(particlesCount > 0)
+            //     console.log(particlesCount)
             this.draw();
         }
         window.requestAnimationFrame(() => this.animate());
     }
 
-
-
     draw()
     {
-        this.ctx.fillStyle = this.sett.background.color;
+        this.ctx.fillStyle = this.props.backgroundColor;
         this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height);
 
-        this.drawParticles();
+        this.props.particleSystems.forEach(ps => {
+            ps.drawParticles();
 
-        if(!this.sett.source.isHidden)
-            this.drawSource();
+            if(!ps.sett.source.isHidden)
+                ps.drawSource();
+            if(this.props.isNameVisible)
+                ps.drawName();
+        });
     }
 
-    generateShape() 
+    handleMouseMove(e)
     {
-        let x = this.sett.source.x;
-        let y = this.sett.source.y;
-        let size = this.defaultSize * this.sett.source.scale;
-        this.shape = new Path2D();
-
-        switch(this.sett.source.shape)
+        if(this.grabbed > -1)
+            this.move(e.clientX, e.clientY);
+        else
         {
-            case 0:
-                this.drawSquare(x, y, size);
-                break;
-            case 1:
-                this.drawCircle(x, y, size);
-                break;
-            case 2:
-                this.drawTriangle(x, y, size);
-                break;
-            default:
-                console.log("Undefined shape")
-                break;
+            for(let i = 0; i < this.props.particleSystems.length; i++)
+                if(this.ctx.isPointInPath(this.props.particleSystems[i].shape, e.clientX, e.clientY))
+                {
+                    this.hover(i, e.clientX, e.clientY);
+                    break;
+                }    
+                else
+                    this.display.current.style.cursor = "default"
         }
+            
     }
 
-    generateParticle()
+    handleMouseDown(e)
     {
-        let point = this.getRandomPointInBounds();        
-        return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed);
-    }
-
-    drawSource()
-    {
-        let isTransparent = this.sett.source.isTransparent;
-
-        this.ctx.fillStyle = "#675bc7";
-        this.ctx.strokeStyle = "cyan";
-
-        if(!isTransparent)
-            this.ctx.fill(this.shape);
-        this.ctx.stroke(this.shape);
-
-        this.drawOrigin();
-    }
-
-    drawSquare(x, y, size)
-    {
-        this.shape.rect(x-size*0.5, y-size*0.5, size, size);
-        this.setBounds(x-size*0.5, x+size*0.5, y-size*0.5, y+size*0.5);
-    }
-
-    drawCircle(x, y, size)
-    {
-        this.shape.arc(x, y, size*0.5, 0, Math.PI*2);
-        this.setBounds(x-size*0.5, x+size*0.5, y-size*0.5, y+size*0.5);
-    }
-
-    drawTriangle(x, y, size)
-    {
-        let h = size * Math.cos(Math.PI / 6);
-        let p1 = {
-            x: x - size*0.5, 
-            y: y + h/3
-        }
-        let p2 = {
-            x: x + size*0.5, 
-            y: y + h/3
-        }
-        let p3 = {
-            x: x, 
-            y: y - 2*h/3
-        }
-
-        
-        this.shape.moveTo(p1.x, p1.y);
-        this.shape.lineTo(p2.x, p2.y);
-        this.shape.lineTo(p3.x, p3.y);
-        this.shape.closePath();
-
-        this.setBounds(x - size*0.5, x + size*0.5, Math.floor(p3.y), Math.floor(p1.y));
-    }
-
-    setBounds(minX, maxX, minY, maxY)
-    {
-        this.bounds = {
-            min: { x: minX, y: minY},
-            max: { x: maxX, y: maxY}
-        }
-    }
-
-    getRandomPointInBounds()
-    {
-        let rp = null;
-        do
+        for(let i = 0; i < this.props.particleSystems.length; i++)
         {
-            rp = this.getRandomPoint(
-                this.bounds.min.x, 
-                this.bounds.max.x - this.bounds.min.x, 
-                this.bounds.min.y, 
-                this.bounds.max.y - this.bounds.min.y
-            );
-        } while(!this.ctx.isPointInPath(this.shape, rp.x, rp.y))
-        
+            let ps = this.props.particleSystems[i];
 
-        return rp;
-    }
-
-    getRandomPoint(minX, countX, minY, countY)
-    {
-        let x = Math.floor(Math.random() * countX) + minX;
-        let y = Math.floor(Math.random() * countY) + minY;
-        return {x: x, y: y}
-    }
-
-    drawOrigin()
-    {
-        let x = this.sett.source.x;
-        let y = this.sett.source.y;
-
-        this.ctx.strokeStyle = "black";
-        this.ctx.fillStyle = "cyan";
-
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, 2, 0, Math.PI*2);
-        this.ctx.fill();
-        this.ctx.stroke();
-    }
-
-    drawParticles()
-    {
-
-        for(let i = 0; i < this.particles.length; i++)
-        {
-            let p = this.particles[i];
-            let size = p.size * p.scale;
-
-            this.drawEmission(p.x, p.y);
-
-            this.ctx.fillStyle = this.sett.particle.color;
-            // this.ctx.beginPath();
-            // this.ctx.rect(p.x - size*0.5, p.y - size*0.5, size, size);
-            // this.ctx.fill();
-            this.ctx.drawImage(this.particleImg, p.x - size*0.5, p.y - size*0.5, size, size)
+            if(this.ctx.isPointInPath(ps.shape, e.clientX, e.clientY))
+            {
+                this.select("particleSystems", i);
+                this.grab(ps.sett.source.x, ps.sett.source.y, i, e.clientX, e.clientY);
+            }
         }
     }
 
-    drawEmission(x, y)
+    handleMouseUp(e)
     {
-        let r = this.sett.particle.emissionRadius*4;
-        let gradient = this.ctx.createRadialGradient(x,y,0.5, x,y,r);
-
-        gradient.addColorStop(0.5, this.sett.particle.emissionColor);
-        gradient.addColorStop(1, this.hex2rgba(this.sett.particle.emissionColor, 0));
-
-        this.ctx.fillStyle = gradient;
-        this.ctx.fillRect(x-r, y-r, r*2, r*2);
+        if(this.grabbed > -1)
+            this.ungrab();
     }
 
-    prepareParticleImage()
+    select(type, index)
     {
-        let imgs = [snowflake_01, snowflake_02];
-        this.particleImg.src = imgs[this.sett.particle.image];
+        this.props.onChangeSelected(type, index);
     }
 
-    hex2rgba(hex,alpha)
+    hover(index, x, y)
     {
-        let rgb = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i,(m, r, g, b) => '#' + r + r + g + g + b + b)
-        .substring(1).match(/.{2}/g)
-        .map(x => parseInt(x, 16))
-
-        return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + alpha + ")";
+        this.props.onChangePsProperty(index, "isHovered", true);
+        let ps = this.props.particleSystems[index];
+        this.display.current.style.cursor = (ps.isGrabbed) ? "grabbing" : "grab"
     }
-    
+
+    move(x, y)
+    {
+        this.props.onChangeSourcePosition(this.grabbed, x + this.grabbedOffset.x, y + this.grabbedOffset.y);
+    }
+
+    grab(objectX, objectY, index, mouseX, mouseY)
+    {
+        this.props.onChangePsProperty(index, "isGrabbed", true);
+        this.grabbed = index;
+        this.display.current.style.cursor = "grabbing";
+
+        this.grabbedOffset = {
+            x: objectX - mouseX,
+            y: objectY - mouseY,
+        }
+    }
+
+    ungrab()
+    {
+        this.props.onChangePsProperty(this.grabbed, "isGrabbed", false);
+        this.display.current.style.cursor = "grab";
+        this.grabbed = -1;
+    }
 
     resize()
     {
@@ -270,7 +187,11 @@ export class Display extends Component {
 
     render() {
         return (
-            <div className="Display" ref={this.display}>
+            <div className="Display" ref={this.display} 
+                onMouseMove={this.handleMouseMove}
+                onMouseDown={this.handleMouseDown}
+                onMouseUp={this.handleMouseUp}
+                >
                 <canvas className="Display--canvas" ref={this.canvas}></canvas>
             </div>
         )
