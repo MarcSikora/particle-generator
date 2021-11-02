@@ -17,7 +17,7 @@ export class PlayButton extends Component {
             return {running: !state.running}
         });
 
-        this.props.togglePlay();
+        this.props.onClick("isRunning");
     }
 
     render() {
