@@ -11,7 +11,7 @@ export class Background extends Component {
 
     handleChange(inputName, value)
     {
-        this.props.onChange("background", inputName, value);
+        this.props.onChange(value);
     }
 
     render() 
