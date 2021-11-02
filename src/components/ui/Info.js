@@ -6,7 +6,8 @@ export class Info extends Component {
         return (
             <div className="Info">
                 Particle Systems: {this.props.particleSystemsCount} | 
-                Objects: {this.props.objectsCount} 
+                Objects: {this.props.objectsCount} |
+                Particles: {this.props.particlesCount} 
             </div>
         )
     }

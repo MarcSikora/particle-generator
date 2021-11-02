@@ -51,7 +51,6 @@ export class Display extends Component {
         {
             let now = Date.now();
             let elapsed = now - this.time;
-
             let particlesCount = 0;
 
             this.props.particleSystems.forEach(ps => {
@@ -60,25 +59,37 @@ export class Display extends Component {
                 {
                     ps.particles.push(ps.generateParticle());
                     this.time = now;
-                    particlesCount += ps.particles.length;
                 }
+                particlesCount += ps.particles.length;
 
                 let toRemove = [];
+                let a = ps.sett.particle.direction;
 
                 for(let i = 0; i < ps.particles.length; i++)
                 {
-                    ps.particles[i].y -= ps.particles[i].speed;
-                    if(ps.particles[i].y < 0 || ps.particles[i].y > this.canvas.current.height)
+                    ps.particles[i].y += ps.particles[i].speed;
+                    // ps.particles[i].x += ps.particles[i].speed;
+                    if(this.isPointOut(ps.particles[i].x, ps.particles[i].y))
                         toRemove.push(i);
                 }
 
                 toRemove.forEach(i => ps.particles.splice(i, 1));        
             });
-            // if(particlesCount > 0)
-            //     console.log(particlesCount)
+            
             this.draw();
+            this.props.onUpdateParticlesCount(particlesCount);
         }
         window.requestAnimationFrame(() => this.animate());
+    }
+
+    isPointOut(x, y)
+    {
+        return (
+            y < 0 || 
+            y > this.canvas.current.height || 
+            x < 0 || 
+            x > this.canvas.current.width
+        );
     }
 
     draw()

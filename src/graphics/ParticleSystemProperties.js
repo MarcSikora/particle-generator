@@ -20,6 +20,7 @@ class ParticleSystemProperties
             image: 0,
             color: "#fff",
             scale: 1,
+            direction: 0,
             speed: 1,
             lifespan: 1,
             emissionColor: "#fff",

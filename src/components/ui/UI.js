@@ -7,9 +7,6 @@ export class UI extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {
-
-        }
 
         this.toggleValue = this.props.toggleValue;
         this.addParticleSystem = this.props.addParticleSystem;
@@ -25,6 +22,7 @@ export class UI extends Component {
                 <Info
                     particleSystemsCount={this.props.particleSystemsCount}
                     objectsCount={this.props.objectsCount}
+                    particlesCount={this.props.particlesCount}
                 ></Info>
                 <GithubLink></GithubLink>
             </div>

@@ -15,6 +15,7 @@ export class App extends Component
 			isRunning: true,
 			isNameVisible: false,
 			backgroundColor: "#403d58",
+			particlesCount: 0,
 			particleSystems: [],
 			objects2D: [],
 			selected: null
@@ -24,6 +25,7 @@ export class App extends Component
 
 		this.handleChangePropertiesList = this.handleChangePropertiesList.bind(this);
 		this.handleChangeBackground = this.handleChangeBackground.bind(this);
+		this.handleUpdateParticlesCount = this.handleUpdateParticlesCount.bind(this);
 		this.handleChangeSourcePosition = this.handleChangeSourcePosition.bind(this);
 		this.handleChangePsProperty = this.handleChangePsProperty.bind(this);
 		this.handleChangeSelected = this.handleChangeSelected.bind(this);
@@ -49,6 +51,12 @@ export class App extends Component
 	{
 		this.setState({backgroundColor: value});
 	}
+
+	handleUpdateParticlesCount(value)
+	{
+		this.setState({particlesCount: value});
+	}
+
 
 	handleChangeSourcePosition(index, x, y)
 	{
@@ -113,6 +121,7 @@ export class App extends Component
 					toggleValue={this.toggleValue}
 					addParticleSystem={this.addParticleSystem}
 					particleSystemsCount={this.state.particleSystems.length}
+					particlesCount={this.state.particlesCount}
 					objectsCount={this.state.objects2D.length}
 				></UI>
 				<Display 
@@ -120,6 +129,7 @@ export class App extends Component
 					onChangeSourcePosition={this.handleChangeSourcePosition}
 					onChangePsProperty={this.handleChangePsProperty}
 					onChangeSelected={this.handleChangeSelected}
+					onUpdateParticlesCount={this.handleUpdateParticlesCount}
 				></Display>
 				<PropertiesList 
 					selected={this.state.selected}
