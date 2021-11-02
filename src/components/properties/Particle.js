@@ -3,26 +3,14 @@ import Property from '../Property'
 import ColorPicker from '../basic/ColorPicker'
 import ImageList from '../basic/ImageList'
 import Range from '../basic/Range'
-import snowflake_01 from '../../assets/snowflake_01.png'
-import snowflake_02 from '../../assets/snowflake_02.png'
+import ImageManager from '../../graphics/ImageManager'
 
 export class Particle extends Component {
     constructor(props)
     {
         super(props)
-        this.sourceShapes = [
-            {
-                id: 0,
-                src: snowflake_01,
-                caption: "snowflake_01"
-            },
-            {
-                id: 1,
-                src: snowflake_02,
-                caption: "snowflake_02"
-            }
-        ];
-
+        this.im = new ImageManager();
+        this.images = this.im.generateSourceShapes();
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -37,17 +25,20 @@ export class Particle extends Component {
             <Property label="Particle">
                 <ImageList 
                     label="Image:"
+                    value={this.props.values.image}
                     inputName="image" 
                     onChange={this.handleChange} 
-                    items={this.sourceShapes}>
+                    items={this.images}>
                 </ImageList>
                 <ColorPicker 
                     label="Color:"
+                    value={this.props.values.color}
                     inputName="color" 
                     onChange={this.handleChange}>
                 </ColorPicker>
                 <Range 
                     label="Scale:"
+                    value={this.props.values.scale}
                     min="1"
                     step="1"
                     max="16"
@@ -56,6 +47,7 @@ export class Particle extends Component {
                 </Range>
                 <Range 
                     label="Speed:"
+                    value={this.props.values.speed}
                     min="1"
                     step="0.5"
                     max="8"
@@ -64,14 +56,16 @@ export class Particle extends Component {
                 </Range>
                 <Range 
                     label="Direction:"
-                    min="-2"
-                    step="0.01"
-                    max="2"
+                    value={this.props.values.direction}
+                    min="0"
+                    step="1"
+                    max="360"
                     inputName="direction" 
                     onChange={this.handleChange}>
                 </Range>
                 <Range 
                     label="Life span:"
+                    value={this.props.values.lifespan}
                     min="0.1"
                     step="0.1"
                     max="1"
@@ -80,11 +74,13 @@ export class Particle extends Component {
                 </Range>
                 <ColorPicker 
                     label="Emission color:"
+                    value={this.props.values.emissionColor}
                     inputName="emissionColor" 
                     onChange={this.handleChange}>
                 </ColorPicker>
                 <Range 
                     label="Emission radius:"
+                    value={this.props.values.emissionRadius}
                     min="0"
                     step="1"
                     max="30"

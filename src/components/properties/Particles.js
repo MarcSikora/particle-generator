@@ -21,6 +21,7 @@ export class Particles extends Component {
             <Property label="Particles">
                 <Range 
                     label="Amount/s:"
+                    value={this.props.values.amount}
                     min="1"
                     step="1"
                     max="100"

@@ -115,6 +115,7 @@ export class App extends Component
 
 	render()
 	{
+		let selectedObject = (this.state.selected) ? this.state[this.state.selected.type][this.state.selected.index] : null;
 		return (
 			<div className="App">
 				<UI 
@@ -133,6 +134,7 @@ export class App extends Component
 				></Display>
 				<PropertiesList 
 					selected={this.state.selected}
+					selectedObject={selectedObject}
 					onChange={this.handleChangePropertiesList}
 					onChangeBackground={this.handleChangeBackground}
 				></PropertiesList>

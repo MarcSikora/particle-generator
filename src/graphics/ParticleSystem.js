@@ -1,6 +1,6 @@
 import Particle from '../graphics/Particle'
-import snowflake_01 from '../assets/snowflake_01.png';
-import snowflake_02 from '../assets/snowflake_02.png';
+import ImageManager from './ImageManager';
+
 import ParticleSystemProperties from './ParticleSystemProperties'
 
 class ParticleSystem
@@ -23,6 +23,7 @@ class ParticleSystem
             min: { x: 0, y: 0},
             max: { x: 0, y: 0}
         }
+        this.im = new ImageManager();
     }
     
     generateShape(ctx) 
@@ -190,7 +191,7 @@ class ParticleSystem
 
     prepareParticleImage()
     {
-        let imgs = [snowflake_01, snowflake_02];
+        let imgs = this.im.particleImages;
         this.particleImg.src = imgs[this.sett.particle.image];
     }
 

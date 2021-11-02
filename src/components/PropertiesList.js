@@ -24,43 +24,47 @@ export class PropertiesList extends Component {
         this.props.onChangeBackground(value);
     }
 
-    render() {
-        if(!this.props.selected)
-            return (
-                <div className="PropertiesList">
-                    <Background
-                        onChange={this.handleChangeBackground}
-                    ></Background>
-                </div>
-            )
-        else
+    getProperties()
+    {
+        if(this.props.selected)
         {
-            if(this.props.selected.isObject)
+            if(this.props.selected.type === "particleSystems")
                 return (
-                    <div className="PropertiesList">
-                        <Background
-                            onChange={this.handleChangeBackground}
-                        ></Background>
-                    </div>
-                )
-            else
-                return (
-                    <div className="PropertiesList">
-                        <Background
-                            onChange={this.handleChangeBackground}
-                        ></Background>
+                    <div>
                         <Source
+                            values={this.props.selectedObject.sett.source}
                             onChange={this.handleChange}
                         ></Source>
                         <Particles
+                            values={this.props.selectedObject.sett.particles}
                             onChange={this.handleChange}
                         ></Particles>
                         <Particle
+                            values={this.props.selectedObject.sett.particle}
                             onChange={this.handleChange}
                         ></Particle>
                     </div>
-                )  
+                );
+            else
+                (
+                    <div>
+                        elo
+                    </div>
+                )
         }
+
+        return "";
+    }
+
+    render() {
+        return (
+            <div className="PropertiesList">
+                <Background
+                    onChange={this.handleChangeBackground}
+                ></Background>
+                {this.getProperties()}
+            </div>
+        )
     }
 }
 

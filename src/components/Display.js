@@ -63,10 +63,9 @@ export class Display extends Component {
                 particlesCount += ps.particles.length;
 
                 let toRemove = [];
-                let a = ps.sett.particle.direction;
 
                 for(let i = 0; i < ps.particles.length; i++)
-                {
+                {                    
                     ps.particles[i].y += ps.particles[i].speed;
                     // ps.particles[i].x += ps.particles[i].speed;
                     if(this.isPointOut(ps.particles[i].x, ps.particles[i].y))

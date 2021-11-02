@@ -5,7 +5,6 @@ export class Range extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {value: 1}
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -13,7 +12,6 @@ export class Range extends Component {
     {
         const value = parseFloat(e.target.value);
         this.props.onChange(this.props.inputName, value);
-        this.setState({ value: value });
     }
 
     render() {
@@ -27,10 +25,10 @@ export class Range extends Component {
                         min={this.props.min}
                         step={this.props.step}
                         max={this.props.max}
-                        value={this.state.value}
+                        value={this.props.value}
                         onChange={this.handleChange}>
                     </input>
-                    <div className="Range--value">{this.state.value}</div>
+                    <div className="Range--value">{this.props.value}</div>
                 </div>
             </div>
         )

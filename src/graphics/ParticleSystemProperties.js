@@ -8,13 +8,13 @@ class ParticleSystemProperties
         this.source = {
             x: 800, 
             y: 400,
-            isTransparent: false,
+            isTransparent: true,
             isHidden: false,
-            shape: 0,
-            scale: 1
+            shape: 2,
+            scale: 5
         }
         this.particles = {
-            amount: 1
+            amount: 10
         }
         this.particle = {
             image: 0,

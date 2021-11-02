@@ -20,12 +20,12 @@ export class Source extends Component {
             {
                 id: 1,
                 src: circleImg,
-                caption: "square"
+                caption: "cirlce"
             },
             {
                 id: 2,
                 src: triangleImg,
-                caption: "square"
+                caption: "triangle"
             },
         ];
 
@@ -43,22 +43,26 @@ export class Source extends Component {
             <Property label="Source">
                 <Checkbox 
                     label="Hidden: "
+                    value={this.props.values.isHidden}
                     inputName="isHidden" 
                     onChange={this.handleChange}>
                 </Checkbox>
                 <Checkbox 
                     label="Transparent: "
+                    value={this.props.values.isTransparent}
                     inputName="isTransparent" 
                     onChange={this.handleChange}>
                 </Checkbox>
                 <ImageList 
                     label="Shape:"
+                    value={this.props.values.shape}
                     inputName="shape" 
                     onChange={this.handleChange} 
                     items={this.sourceShapes}>
                 </ImageList>
                 <Range 
                     label="Scale:"
+                    value={this.props.values.scale}
                     min="1"
                     step="0.5"
                     max="16"

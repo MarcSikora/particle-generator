@@ -13,7 +13,6 @@ export class ImageList extends Component {
     handleChange(id)
     {
         this.props.onChange(this.props.inputName, id);
-        this.setState({ value: id });
     }
 
     render() {
@@ -23,7 +22,7 @@ export class ImageList extends Component {
                 <div className="ImageList--content">
                     {
                         this.props.items.map((item, i) => {
-                            let isSelected = (i === this.state.value);
+                            let isSelected = (i === this.props.value);
                             return (
                                 <ImageListItem 
                                     key={item.id} 

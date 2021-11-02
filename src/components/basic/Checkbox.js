@@ -5,7 +5,6 @@ export class Checkbox extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {value: false}
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -13,14 +12,14 @@ export class Checkbox extends Component {
     {
         const value = e.target.checked;
         this.props.onChange(this.props.inputName, value);
-        this.setState({ value: value });
     }
     
     render() {
+        // console.log(this.props.value)
         return (
             <div className="Checkbox">
                 <label>{this.props.label}</label>
-                <input className="Checkbox--input" type="checkbox" onChange={this.handleChange}></input>
+                <input className="Checkbox--input" type="checkbox" checked={this.props.value} onChange={this.handleChange}></input>
             </div>
         )
     }
