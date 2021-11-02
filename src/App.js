@@ -4,58 +4,104 @@ import './App.css';
 import Display from './components/Display';
 import PropertiesList from './components/PropertiesList';
 import UI from './components/ui/UI';
+import ParticleSystem from './graphics/ParticleSystem';
 
 export class App extends Component
 {
 	constructor(props)
 	{
 		super(props);
-		this.handleChange = this.handleChange.bind(this);
-		this.togglePlay = this.togglePlay.bind(this);
-
 		this.state = {
 			isRunning: true,
-			properties: {
-				background: {
-					color: "#000"
-				},
-				source: {
-					x: 800, 
-					y: 400,
-					isTransparent: false,
-					isHidden: false,
-					shape: 0,
-					scale: 1
-				},
-				particles: {
-					amount: 1
-				},
-				particle: {
-					image: 0,
-					color: "#fff",
-					scale: 1,
-					speed: 1,
-					lifespan: 1,
-					emissionColor: "#fff",
-					emissionRadius: 1
-				}
-			}
+			isNameVisible: false,
+			backgroundColor: "#403d58",
+			particleSystems: [],
+			objects2D: [],
+			selected: null
 		}
+		this.psLastId = 0;
+		this.objectLastId = 0;
+
+		this.handleChangePropertiesList = this.handleChangePropertiesList.bind(this);
+		this.handleChangeBackground = this.handleChangeBackground.bind(this);
+		this.handleChangeSourcePosition = this.handleChangeSourcePosition.bind(this);
+		this.handleChangePsProperty = this.handleChangePsProperty.bind(this);
+		this.handleChangeSelected = this.handleChangeSelected.bind(this);
+        this.addParticleSystem = this.addParticleSystem.bind(this);
+		
+		this.toggleValue = this.toggleValue.bind(this);
 	}
 
-	handleChange(propertyName, inputName, value)
+	handleChangePropertiesList(propertyName, inputName, value)
 	{
 		this.setState(state => {
-			const p = state.properties;
-			p[propertyName][inputName] = value;
-			return {properies: p}
+			let type = this.state.selected.type
+			let index = this.state.selected.index;
+			state[type][index].sett[propertyName][inputName] = value;
+
+			let obj = {};
+			obj[type] = state[type];
+			return obj;
 		})
 	}
 
-	togglePlay()
+	handleChangeBackground(value)
+	{
+		this.setState({backgroundColor: value});
+	}
+
+	handleChangeSourcePosition(index, x, y)
 	{
 		this.setState(state => {
-			return {isRunning: !state.isRunning}
+			state.particleSystems[index].sett.source.x = x;
+			state.particleSystems[index].sett.source.y = y;
+			return {particleSystems: state.particleSystems}
+		});
+	}
+
+	handleChangePsProperty(index, propertyName, value)
+	{
+		this.setState(state => {
+			state.particleSystems[index][propertyName] = value;
+			return {particleSystems: state.particleSystems}
+		});
+	}
+
+	handleChangeSelected(type, index)
+	{
+		this.setState({
+			selected: {
+				type: type,
+				index: index,
+			}
+		});
+
+		this.setState(state => {
+			let previous = state.particleSystems.find(ps => ps.isSelected);
+			
+			if(previous)
+				previous.isSelected = false;
+			state.particleSystems[index].isSelected = true;
+
+			return {particleSystems: state.particleSystems}
+		});
+	}
+
+	addParticleSystem()
+	{
+		this.psLastId++;
+
+		this.setState(state => {
+			return {particleSystems: state.particleSystems.concat(new ParticleSystem(this.psLastId))}
+		});
+	}
+
+	toggleValue(propertyName)
+	{
+		this.setState(state => {
+			let obj = {}
+			obj[propertyName] = !state[propertyName];
+			return obj
 		});
 	}
 
@@ -63,9 +109,23 @@ export class App extends Component
 	{
 		return (
 			<div className="App">
-				<UI togglePlay={this.togglePlay}></UI>
-				<Display isRunning={this.state.isRunning} properties={this.state.properties}></Display>
-				<PropertiesList onChange={this.handleChange}></PropertiesList>
+				<UI 
+					toggleValue={this.toggleValue}
+					addParticleSystem={this.addParticleSystem}
+					particleSystemsCount={this.state.particleSystems.length}
+					objectsCount={this.state.objects2D.length}
+				></UI>
+				<Display 
+					{...this.state}
+					onChangeSourcePosition={this.handleChangeSourcePosition}
+					onChangePsProperty={this.handleChangePsProperty}
+					onChangeSelected={this.handleChangeSelected}
+				></Display>
+				<PropertiesList 
+					selected={this.state.selected}
+					onChange={this.handleChangePropertiesList}
+					onChangeBackground={this.handleChangeBackground}
+				></PropertiesList>
 			</div>
 		);
 	}

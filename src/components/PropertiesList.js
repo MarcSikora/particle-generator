@@ -11,6 +11,7 @@ export class PropertiesList extends Component {
     {
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeBackground = this.handleChangeBackground.bind(this);
     }
 
     handleChange(propertyName, inputName, value)
@@ -18,23 +19,48 @@ export class PropertiesList extends Component {
         this.props.onChange(propertyName, inputName, value);
     }
 
+    handleChangeBackground(value)
+    {
+        this.props.onChangeBackground(value);
+    }
+
     render() {
-        return (
-            <div className="PropertiesList">
-                <Background
-                    onChange={this.handleChange}
-                ></Background>
-                <Source
-                    onChange={this.handleChange}
-                ></Source>
-                <Particles
-                    onChange={this.handleChange}
-                ></Particles>
-                <Particle
-                    onChange={this.handleChange}
-                ></Particle>
-            </div>
-        )
+        if(!this.props.selected)
+            return (
+                <div className="PropertiesList">
+                    <Background
+                        onChange={this.handleChangeBackground}
+                    ></Background>
+                </div>
+            )
+        else
+        {
+            if(this.props.selected.isObject)
+                return (
+                    <div className="PropertiesList">
+                        <Background
+                            onChange={this.handleChangeBackground}
+                        ></Background>
+                    </div>
+                )
+            else
+                return (
+                    <div className="PropertiesList">
+                        <Background
+                            onChange={this.handleChangeBackground}
+                        ></Background>
+                        <Source
+                            onChange={this.handleChange}
+                        ></Source>
+                        <Particles
+                            onChange={this.handleChange}
+                        ></Particles>
+                        <Particle
+                            onChange={this.handleChange}
+                        ></Particle>
+                    </div>
+                )  
+        }
     }
 }
 
