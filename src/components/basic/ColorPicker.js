@@ -20,7 +20,7 @@ export class ColorPicker extends Component {
         return (
             <div className="ColorPicker">
                 <label>{this.props.label}</label>
-                <input className="ColorPicker--input" type="color" onChange={this.handleChange}></input>
+                <input className="ColorPicker--input" type="color" value={this.props.value} onChange={this.handleChange}></input>
             </div>
         )
     }

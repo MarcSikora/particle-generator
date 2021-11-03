@@ -20,6 +20,7 @@ export class Background extends Component {
             <Property label="Background">
                 <ColorPicker 
                     label="Color: "
+                    value={this.props.value}
                     inputName="color" 
                     onChange={this.handleChange}>
                 </ColorPicker>

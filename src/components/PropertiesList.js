@@ -60,6 +60,7 @@ export class PropertiesList extends Component {
         return (
             <div className="PropertiesList">
                 <Background
+                    value={this.props.backgroundColor}
                     onChange={this.handleChangeBackground}
                 ></Background>
                 {this.getProperties()}
