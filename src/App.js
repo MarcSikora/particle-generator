@@ -22,6 +22,7 @@ export class App extends Component
 		this.psLastId = 0;
 		this.objectLastId = 0;
 
+        this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleChangePropertiesList = this.handleChangePropertiesList.bind(this);
 		this.handleChangeBackground = this.handleChangeBackground.bind(this);
 		this.handleChangeSourcePosition = this.handleChangeSourcePosition.bind(this);
@@ -31,6 +32,37 @@ export class App extends Component
 		
 		this.toggleValue = this.toggleValue.bind(this);
 	}
+
+	componentDidMount()
+	{
+        document.addEventListener("keydown", this.handleKeyDown);
+	}
+
+	handleKeyDown(e)
+    {
+        switch(e.keyCode)
+        {
+            case 88:    //X
+                this.removeSelected();
+                break;
+            default:
+                break;
+        }
+    }
+
+    removeSelected()
+    {
+		let type = this.state.selected.type;
+		let index = this.state.selected.index;
+
+		this.setState({selected: null});
+
+		this.setState(state => {
+			let obj = {}
+			obj[type] = state[type].filter((ps, i) => i !== index);
+			return obj;
+		});
+    }
 
 	handleChangePropertiesList(propertyName, inputName, value)
 	{
