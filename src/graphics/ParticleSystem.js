@@ -12,6 +12,7 @@ class ParticleSystem
         this.sett = new ParticleSystemProperties();
         this.defaultSize = 32;
         this.particles = [];
+        this.time = 0;
 
         this.shape = null;
         this.isHovered = false;

@@ -9,7 +9,6 @@ export class Display extends Component {
         this.canvas = React.createRef();
         this.display = React.createRef();
         this.ctx = null;
-        this.time = 0;
         this.grabbed = -1;
         this.grabbedOffset = {
             x: 20,
@@ -42,42 +41,41 @@ export class Display extends Component {
             ps.generateShape(this.ctx);
             ps.prepareParticleImage();
         });
-        this.draw();
     }
 
     animate()
     {
         if(this.props.isRunning)
         {
-            let now = Date.now();
-            let elapsed = now - this.time;
-            let particlesCount = 0;
-
-            this.props.particleSystems.forEach(ps => {
+            this.props.particleSystems.forEach((ps, ind) => {
+                let now = Date.now();
+                let elapsed = now - ps.time;
 
                 if(elapsed > 1000/ps.sett.particles.amount)
                 {
                     ps.particles.push(ps.generateParticle());
-                    this.time = now;
+                    ps.time = now;
                 }
-                particlesCount += ps.particles.length;
 
                 let toRemove = [];
 
                 for(let i = 0; i < ps.particles.length; i++)
                 {                    
+                    ps.particles[i].scale += ps.particles[i].life * 0.1;
                     ps.particles[i].y += ps.particles[i].speed;
-                    // ps.particles[i].x += ps.particles[i].speed;
+                    ps.particles[i].life += 0.001;
+                    
                     if(this.isPointOut(ps.particles[i].x, ps.particles[i].y))
                         toRemove.push(i);
                 }
 
-                toRemove.forEach(i => ps.particles.splice(i, 1));        
+                ps.particles = ps.particles.filter((v, i) => {
+                    return toRemove.indexOf(i) === -1
+                });
             });
             
-            this.draw();
-            this.props.onUpdateParticlesCount(particlesCount);
         }
+        this.draw();
         window.requestAnimationFrame(() => this.animate());
     }
 
