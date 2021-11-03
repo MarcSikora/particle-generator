@@ -2,9 +2,6 @@ class ParticleSystemProperties
 {
     constructor()
     {
-        this.background = {
-            color: "#000"
-        }
         this.source = {
             x: 800, 
             y: 400,
@@ -18,12 +15,12 @@ class ParticleSystemProperties
         }
         this.particle = {
             image: 0,
-            color: "#fff",
+            color: "#ffffff",
             scale: 1,
             direction: 0,
             speed: 1,
             lifespan: 1,
-            emissionColor: "#fff",
+            emissionColor: "#00e1ff",
             emissionRadius: 0
         }
     }
