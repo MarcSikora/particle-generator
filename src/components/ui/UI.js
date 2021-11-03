@@ -24,12 +24,14 @@ export class UI extends Component {
     }
 
     render() {
-        if(this.state.isVisible)
-            return (
-                <div>
-                    <HideButton
-                        onChange={this.toggleUI}
-                    ></HideButton>
+        let visibility = (this.state.isVisible) ? "visible" : "hidden";
+
+        return (
+            <div>
+                <HideButton
+                    onChange={this.toggleUI}
+                ></HideButton>
+                <div style={{visibility: visibility}}>
                     <MainButtons 
                         toggleValue={this.toggleValue}
                         addParticleSystem={this.addParticleSystem}
@@ -40,12 +42,6 @@ export class UI extends Component {
                     ></Info>
                     <GithubLink></GithubLink>
                 </div>
-            )
-        return (
-            <div>
-                <HideButton
-                    onChange={this.toggleUI}
-                ></HideButton>
             </div>
         )
     }
