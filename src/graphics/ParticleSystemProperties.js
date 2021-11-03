@@ -10,7 +10,7 @@ class ParticleSystemProperties
             y: 400,
             isTransparent: true,
             isHidden: false,
-            shape: 2,
+            shape: 0,
             scale: 5
         }
         this.particles = {
@@ -24,7 +24,7 @@ class ParticleSystemProperties
             speed: 1,
             lifespan: 1,
             emissionColor: "#fff",
-            emissionRadius: 1
+            emissionRadius: 0
         }
     }
 }
