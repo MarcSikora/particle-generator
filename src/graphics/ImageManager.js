@@ -5,6 +5,12 @@ import triangleImg from '../assets/triangle.png'
 import snowflake_01 from '../assets/snowflake_01.png';
 import snowflake_02 from '../assets/snowflake_02.png';
 import smoke_01 from '../assets/smoke_01.png';
+import smoke_02 from '../assets/smoke_02.png';
+import smoke_03 from '../assets/smoke_03.png';
+
+import cloud_01 from '../assets/cloud_01.png';
+import cloud_02 from '../assets/cloud_02.png';
+import tree_01 from '../assets/tree_01.png';
 
 class ImageManager
 {
@@ -19,7 +25,15 @@ class ImageManager
         this.particleImages = [
             snowflake_01,
             snowflake_02,
-            smoke_01
+            smoke_01,
+            smoke_02,
+            smoke_03
+        ];
+
+        this.objectImages = [
+            cloud_01,
+            cloud_02,
+            tree_01
         ];
     }
 
@@ -31,6 +45,11 @@ class ImageManager
     getSourceShapesData()
     {
         return this.getData(this.sourceShapes, "source shape");
+    }
+
+    geObjectImagesData()
+    {
+        return this.getData(this.objectImages, "object image");
     }
     
     getData(sources, caption)
