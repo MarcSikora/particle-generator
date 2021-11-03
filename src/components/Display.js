@@ -199,6 +199,7 @@ export class Display extends Component {
                 onMouseMove={this.handleMouseMove}
                 onMouseDown={this.handleMouseDown}
                 onMouseUp={this.handleMouseUp}
+                onKeyDown={this.handleKeyDown}
                 >
                 <canvas className="Display--canvas" ref={this.canvas}></canvas>
             </div>
