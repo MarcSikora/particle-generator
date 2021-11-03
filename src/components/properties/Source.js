@@ -3,31 +3,15 @@ import Property from '../Property'
 import Checkbox from '../basic/Checkbox'
 import ImageList from '../basic/ImageList'
 import Range from '../basic/Range'
-import squareImg from '../../assets/square.png'
-import circleImg from '../../assets/circle.png'
-import triangleImg from '../../assets/triangle.png'
+import ImageManager from '../../graphics/ImageManager'
+
 
 export class Source extends Component {
     constructor(props)
     {
         super(props)
-        this.sourceShapes = [
-            {
-                id: 0,
-                src: squareImg,
-                caption: "square"
-            },
-            {
-                id: 1,
-                src: circleImg,
-                caption: "cirlce"
-            },
-            {
-                id: 2,
-                src: triangleImg,
-                caption: "triangle"
-            },
-        ];
+        this.im = new ImageManager();
+        this.sourceShapes = this.im.getSourceShapesData();
 
         this.handleChange = this.handleChange.bind(this);
     }

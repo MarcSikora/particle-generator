@@ -10,7 +10,7 @@ export class Particle extends Component {
     {
         super(props)
         this.im = new ImageManager();
-        this.images = this.im.generateSourceShapes();
+        this.images = this.im.getParticleImagesData();
         this.handleChange = this.handleChange.bind(this);
     }
 
