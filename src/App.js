@@ -93,6 +93,8 @@ export class App extends Component
 
 		this.setState(state => {
 			return {particleSystems: state.particleSystems.concat(new ParticleSystem(this.psLastId))}
+		}, () => {
+			this.handleChangeSelected("particleSystems", this.state.particleSystems.length - 1)
 		});
 	}
 
@@ -123,6 +125,7 @@ export class App extends Component
 					onChangeSelected={this.handleChangeSelected}
 				></Display>
 				<PropertiesList 
+					backgroundColor={this.state.backgroundColor}
 					selected={this.state.selected}
 					selectedObject={selectedObject}
 					onChange={this.handleChangePropertiesList}
