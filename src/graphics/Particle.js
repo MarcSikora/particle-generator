@@ -7,6 +7,7 @@ class Particle
         this.scale = scale;
         this.speed = speed;
         this.lifeSpan = 1;
+        this.life = 0;
         this.size = 8;
     }
 
