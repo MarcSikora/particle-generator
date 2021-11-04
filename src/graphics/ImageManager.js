@@ -11,6 +11,7 @@ import smoke_03 from '../assets/smoke_03.png';
 import cloud_01 from '../assets/cloud_01.png';
 import cloud_02 from '../assets/cloud_02.png';
 import tree_01 from '../assets/tree_01.png';
+import house_01 from '../assets/house_01.png';
 
 class ImageManager
 {
@@ -33,7 +34,8 @@ class ImageManager
         this.objectImages = [
             cloud_01,
             cloud_02,
-            tree_01
+            tree_01,
+            house_01
         ];
     }
 
