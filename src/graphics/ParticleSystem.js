@@ -26,13 +26,18 @@ class ParticleSystem
         }
         this.im = new ImageManager();
     }
-    
-    generateShape(ctx) 
+
+    prepare(ctx)
     {
         this.ctx = ctx;
-
-        let x = this.sett.source.x;
-        let y = this.sett.source.y;
+        this.generateShape();
+        this.prepareParticleImage();
+    }
+    
+    generateShape() 
+    {
+        let x = this.sett.x;
+        let y = this.sett.y;
         let size = this.defaultSize * this.sett.source.scale;
         this.shape = new Path2D();
 
@@ -57,6 +62,16 @@ class ParticleSystem
     {
         let point = this.getRandomPointInBounds();        
         return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed);
+    }
+
+    draw(isNameVisible)
+    {
+        this.drawParticles();
+
+        if(!this.sett.source.isHidden)
+            this.drawSource();
+        if(isNameVisible)
+            this.drawName();
     }
 
     drawSource()
@@ -143,8 +158,8 @@ class ParticleSystem
 
     drawOrigin()
     {
-        let x = this.sett.source.x;
-        let y = this.sett.source.y;
+        let x = this.sett.x;
+        let y = this.sett.y;
 
         this.ctx.strokeStyle = "black";
         this.ctx.fillStyle = "cyan";
@@ -157,8 +172,8 @@ class ParticleSystem
 
     drawName()
     {
-        let x = this.sett.source.x;
-        let y = this.sett.source.y;
+        let x = this.sett.x;
+        let y = this.sett.y;
         this.ctx.fillStyle = "cyan"
         this.ctx.fillText(this.name, x + 5, y - 2)
     }
