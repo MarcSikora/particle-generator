@@ -159,7 +159,7 @@ class ParticleSystem
     {
         let x = this.sett.source.x;
         let y = this.sett.source.y;
-        this.ctx.fillStyle = "white"
+        this.ctx.fillStyle = "cyan"
         this.ctx.fillText(this.name, x + 5, y - 2)
     }
 
