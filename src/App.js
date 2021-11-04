@@ -16,10 +16,17 @@ export class App extends Component
 			isRunning: true,
 			isNameVisible: false,
 			backgroundColor: "#403d58",
-			particleSystems: [],
-			objects2D: [],
-			selected: null
+			objects: [],
+			objects2DCounter: 0,
+			particleSystemsCounter: 0,
+			selected: -1,
+			grabbed: {
+				index: -1,
+				offsetX: 0,
+				offsetY: 0
+			}
 		}
+		
 		this.psLastId = 0;
 		this.objectLastId = 0;
 
@@ -29,6 +36,7 @@ export class App extends Component
 		this.handleChangePosition = this.handleChangePosition.bind(this);
 		this.handleChangeProperty = this.handleChangeProperty.bind(this);
 		this.handleChangeSelected = this.handleChangeSelected.bind(this);
+		this.handleChangeGrabbed = this.handleChangeGrabbed.bind(this);
 
         this.addParticleSystem = this.addParticleSystem.bind(this);
         this.addObject2D = this.addObject2D.bind(this);
@@ -44,8 +52,20 @@ export class App extends Component
     {
         switch(e.keyCode)
         {
-            case 88:    //X
+            case 88:  //X
                 this.removeSelected();
+                break;
+			case 38:  //ArrowUp
+				this.moveLayer(1);
+                break;
+			case 87:  //W
+                this.moveLayer(1);
+                break;
+			case 40:  //ArrowDown
+				this.moveLayer(-1);
+                break;
+			case 83:  //S
+                this.moveLayer(-1);
                 break;
             default:
                 break;
@@ -54,28 +74,40 @@ export class App extends Component
 
     removeSelected()
     {
-		let type = this.state.selected.type;
-		let index = this.state.selected.index;
-
-		this.setState({selected: null});
-
+		let index = this.state.selected;
 		this.setState(state => {
-			let obj = {};
-			obj[type] = state[type].filter((ps, i) => i !== index);
-			return obj;
+			return {
+				selected: null,
+				grabbed: {
+					index: -1,
+					offsetX: 0,
+					offsetY: 0
+				},
+				objects: state.objects.filter((o, i) => i !== index)
+			};
 		});
     }
+
+	moveLayer(direction)
+	{
+		let newIndex = direction + this.state.selected;
+
+		if(newIndex >= 0 && newIndex < this.state.objects.length)
+			this.setState(state => {
+				let moved = state.objects[state.selected];
+				state.objects = state.objects.filter((o, i) => i !== state.selected);
+				state.objects.splice(newIndex, 0, moved)
+
+				return { objects: state.objects}
+			}, () => this.handleChangeSelected(newIndex));
+	}
 
 	handleChangePropertiesList(propertyName, inputName, value)
 	{
 		this.setState(state => {
-			let type = this.state.selected.type;
-			let index = this.state.selected.index;
-			state[type][index].sett[propertyName][inputName] = value;
-
-			let obj = {};
-			obj[type] = state[type];
-			return obj;
+			let index = this.state.selected;
+			state.objects[index].sett[propertyName][inputName] = value;
+			return {objects: state.objects};
 		})
 	}
 
@@ -87,52 +119,43 @@ export class App extends Component
 	handleChangePosition(grabbed, x, y)
 	{
 		this.setState(state => {
-			if(grabbed.type === "particleSystems")
-			{
-				state.particleSystems[grabbed.index].sett.source.x = x;
-				state.particleSystems[grabbed.index].sett.source.y = y;
-			}
-			else
-			{
-				state.objects2D[grabbed.index].sett.x = x;
-				state.objects2D[grabbed.index].sett.y = y;
-			}
-			
-			let obj = {};
-			obj[grabbed.type] = state[grabbed.type]
-			return obj;
+			state.objects[grabbed].sett.x = x; 
+			state.objects[grabbed].sett.y = y;
+			return {objects: state.objects};
 		});
 	}
 
-	handleChangeProperty(type, index, propertyName, value)
+	handleChangeProperty(index, propertyName, value)
 	{
 		this.setState(state => {
-			state[type][index][propertyName] = value;
-			let obj = {};
-			obj[type] = state[type];
-			return obj;
+			state.objects[index][propertyName] = value;
+			return {objects: state.objects};
 		});
 	}
 
-	handleChangeSelected(type, index)
+	handleChangeSelected(index)
 	{
-		this.setState({
-			selected: {
-				type: type,
-				index: index,
-			}
-		});
+		this.setState({selected: index});
 
 		this.setState(state => {
-			let previous = state[type].find(ps => ps.isSelected);
-			
+			let previous = state.objects.find(o => o.isSelected);
+
 			if(previous)
 				previous.isSelected = false;
-			state[type][index].isSelected = true;
+			state.objects[index].isSelected = true;
 			
-			let obj = {};
-			obj[type] = state[type]
- 			return obj;
+			return {objects: state.objects};
+		});
+	}
+
+	handleChangeGrabbed(index, x, y)
+	{
+		this.setState({
+			grabbed: {
+				index: index,
+				offsetX: x,
+				offsetY: y
+			}
 		});
 	}
 
@@ -141,9 +164,14 @@ export class App extends Component
 		this.psLastId++;
 
 		this.setState(state => {
-			return {particleSystems: state.particleSystems.concat(new ParticleSystem(this.psLastId))}
+			state.particleSystemsCounter++
+
+			return {
+				particleSystemsCounter: state.particleSystemsCounter,
+				objects: state.objects.concat(new ParticleSystem(this.psLastId))
+			}
 		}, () => {
-			this.handleChangeSelected("particleSystems", this.state.particleSystems.length - 1)
+			this.handleChangeSelected(this.state.objects.length - 1)
 		});
 	}
 
@@ -152,9 +180,14 @@ export class App extends Component
 		this.objectLastId++;
 
 		this.setState(state => {
-			return {objects2D: state.objects2D.concat(new Object2D(this.objectLastId))}
+			state.objects2DCounter++
+
+			return {
+				objects2DCounter: state.objects2DCounter,
+				objects: state.objects.concat(new Object2D(this.objectLastId))
+			}
 		}, () => {
-			this.handleChangeSelected("objects2D", this.state.objects2D.length - 1)
+			this.handleChangeSelected(this.state.objects.length - 1)
 		});
 	}
 
@@ -163,31 +196,31 @@ export class App extends Component
 		this.setState(state => {
 			let obj = {}
 			obj[propertyName] = !state[propertyName];
-			return obj
+			return obj;
 		});
 	}
 
 	render()
 	{
-		let selectedObject = (this.state.selected) ? this.state[this.state.selected.type][this.state.selected.index] : null;
+		let selectedObject = (this.state.selected > -1) ? this.state.objects[this.state.selected] : null;
 		return (
 			<div className="App">
 				<UI 
 					toggleValue={this.toggleValue}
 					addParticleSystem={this.addParticleSystem}
 					addObject2D={this.addObject2D}
-					particleSystemsCount={this.state.particleSystems.length}
-					objectsCount={this.state.objects2D.length}
+					particleSystemsCount={this.state.particleSystemsCounter}
+					objectsCount={this.state.objects2DCounter}
 				></UI>
 				<Display 
 					{...this.state}
 					onChangePosition={this.handleChangePosition}
 					onChangeProperty={this.handleChangeProperty}
 					onChangeSelected={this.handleChangeSelected}
+					onChangeGrabbed={this.handleChangeGrabbed}
 				></Display>
 				<PropertiesList 
 					backgroundColor={this.state.backgroundColor}
-					selected={this.state.selected}
 					selectedObject={selectedObject}
 					onChange={this.handleChangePropertiesList}
 					onChangeBackground={this.handleChangeBackground}

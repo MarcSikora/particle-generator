@@ -5,6 +5,7 @@ import Background from './properties/Background';
 import Source from './properties/Source';
 import Particles from './properties/Particles';
 import Particle from './properties/Particle';
+import ParticleSystem from '../graphics/ParticleSystem';
 
 
 export class PropertiesList extends Component {
@@ -27,10 +28,9 @@ export class PropertiesList extends Component {
 
     getProperties()
     {
-
-        if(this.props.selected)
+        if(this.props.selectedObject)
         {
-            if(this.props.selected.type === "particleSystems")
+            if(this.props.selectedObject instanceof ParticleSystem)
                 return (
                     <div>
                         <Source
