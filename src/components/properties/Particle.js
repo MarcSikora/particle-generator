@@ -40,7 +40,7 @@ export class Particle extends Component {
                     label="Scale:"
                     value={this.props.values.scale}
                     min="1"
-                    step="1"
+                    step="0.5"
                     max="16"
                     inputName="scale" 
                     onChange={this.handleChange}>
