@@ -31,24 +31,20 @@ class Object2D
         }
     }
 
-    draw()
+    draw(isNameVisible)
     {
         this.ctx.strokeStyle = (this.isSelected) ? "yellow": "cyan";
         this.ctx.lineWidth = 1;
 
         this.shape = new Path2D();
         this.shape.rect(this.sett.x, this.sett.y, this.size, this.size);
-
-        
-
-            
-        let x = this.sett.x + this.size*0.5;
-        let y = this.sett.y + this.size*0.5;
-
         this.ctx.drawImage(this.image, this.sett.x, this.sett.y, this.size, this.size);
+
         if(this.sett.general.isFrameVisible)
             this.ctx.stroke(this.shape);
 
+        if(isNameVisible)
+            this.drawName();
     }
 
     drawName()
