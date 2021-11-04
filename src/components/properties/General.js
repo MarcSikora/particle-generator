@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Property from '../Property'
-import Checkbox from '../basic/Checkbox'
 import ImageList from '../basic/ImageList'
 import Range from '../basic/Range'
 import ImageManager from '../../graphics/ImageManager'
@@ -40,19 +39,6 @@ export class General extends Component {
                     inputName="scale" 
                     onChange={this.handleChange}>
                 </Range> 
-                {/* <Checkbox 
-                    label="Hidden: "
-                    value={this.props.values.isHidden}
-                    inputName="isHidden" 
-                    onChange={this.handleChange}>
-                </Checkbox>
-                <Checkbox 
-                    label="Transparent: "
-                    value={this.props.values.isTransparent}
-                    inputName="isTransparent" 
-                    onChange={this.handleChange}>
-                </Checkbox>
-                */}
             </Property>
         )
     }
