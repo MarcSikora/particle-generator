@@ -9,6 +9,7 @@ export class MainButtons extends Component {
         super(props);
         this.toggleValue = this.props.toggleValue;
         this.addParticleSystem = this.props.addParticleSystem;
+        this.addObject2D = this.props.addObject2D;
         this.toggleNames = this.toggleNames.bind(this);
     }
 
@@ -22,7 +23,7 @@ export class MainButtons extends Component {
             <div className="MainButtons">
                 <PlayButton onClick={this.toggleValue}></PlayButton>
                 <Button text="Add particle system" onClick={this.addParticleSystem}></Button>
-                <Button text="Add object"></Button>
+                <Button text="Add object" onClick={this.addObject2D}></Button>
                 <Button text="Toggle names" onClick={this.toggleNames}></Button>
             </div>
         )

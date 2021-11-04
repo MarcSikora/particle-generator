@@ -13,6 +13,7 @@ export class UI extends Component {
         }
         this.toggleValue = this.props.toggleValue;
         this.addParticleSystem = this.props.addParticleSystem;
+        this.addObject2D = this.props.addObject2D;
         this.toggleUI = this.toggleUI.bind(this);
     }
 
@@ -35,6 +36,7 @@ export class UI extends Component {
                     <MainButtons 
                         toggleValue={this.toggleValue}
                         addParticleSystem={this.addParticleSystem}
+                        addObject2D={this.addObject2D}
                     ></MainButtons>
                     <Info
                         particleSystemsCount={this.props.particleSystemsCount}
