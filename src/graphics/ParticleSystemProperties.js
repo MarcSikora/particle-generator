@@ -2,9 +2,10 @@ class ParticleSystemProperties
 {
     constructor()
     {
+        this.x = 800;
+        this.y = 400;
         this.source = {
-            x: 800, 
-            y: 400,
+            
             isTransparent: true,
             isHidden: false,
             shape: 0,
