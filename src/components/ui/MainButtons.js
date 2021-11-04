@@ -11,11 +11,17 @@ export class MainButtons extends Component {
         this.addParticleSystem = this.props.addParticleSystem;
         this.addObject2D = this.props.addObject2D;
         this.toggleNames = this.toggleNames.bind(this);
+        this.toggleGizmos = this.toggleGizmos.bind(this);
     }
 
     toggleNames()
     {
         this.props.toggleValue("isNameVisible");
+    }
+
+    toggleGizmos()
+    {
+        this.props.toggleValue("isGizmoVisible");
     }
 
     render() {
@@ -25,6 +31,7 @@ export class MainButtons extends Component {
                 <Button text="Add particle system" onClick={this.addParticleSystem}></Button>
                 <Button text="Add object" onClick={this.addObject2D}></Button>
                 <Button text="Toggle names" onClick={this.toggleNames}></Button>
+                <Button text="Toggle gizmos" onClick={this.toggleGizmos}></Button>
             </div>
         )
     }

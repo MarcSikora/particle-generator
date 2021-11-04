@@ -34,9 +34,9 @@ export class UI extends Component {
                 ></HideButton>
                 <div style={{visibility: visibility}}>
                     <MainButtons 
-                        toggleValue={this.toggleValue}
                         addParticleSystem={this.addParticleSystem}
                         addObject2D={this.addObject2D}
+                        toggleValue={this.toggleValue}
                     ></MainButtons>
                     <Info
                         particleSystemsCount={this.props.particleSystemsCount}

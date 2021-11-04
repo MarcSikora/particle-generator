@@ -26,12 +26,6 @@ export class Source extends Component {
         return (
             <Property label="Source">
                 <Checkbox 
-                    label="Hidden: "
-                    value={this.props.values.isHidden}
-                    inputName="isHidden" 
-                    onChange={this.handleChange}>
-                </Checkbox>
-                <Checkbox 
                     label="Transparent: "
                     value={this.props.values.isTransparent}
                     inputName="isTransparent" 

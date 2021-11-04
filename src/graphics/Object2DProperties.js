@@ -8,7 +8,6 @@ class Object2DProperties
         this.general = {
             type: 0,
             scale: 10,
-            isFrameVisible: true
         }
     }
 }

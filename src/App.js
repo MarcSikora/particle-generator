@@ -15,6 +15,7 @@ export class App extends Component
 		this.state = {
 			isRunning: true,
 			isNameVisible: false,
+			isGizmoVisible: true,
 			backgroundColor: "#403d58",
 			objects: [],
 			objects2DCounter: 0,

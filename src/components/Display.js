@@ -84,7 +84,7 @@ export class Display extends Component {
         this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height);
 
         this.props.objects.forEach(obj => {
-            obj.draw(this.props.isNameVisible);
+            obj.draw(this.props.isNameVisible, this.props.isGizmoVisible);
         });
     }
 

@@ -31,7 +31,7 @@ class Object2D
         }
     }
 
-    draw(isNameVisible)
+    draw(isNameVisible, isGizmoVisible)
     {
         this.ctx.strokeStyle = (this.isSelected) ? "yellow": "cyan";
         this.ctx.lineWidth = 1;
@@ -40,7 +40,7 @@ class Object2D
         this.shape.rect(this.sett.x, this.sett.y, this.size, this.size);
         this.ctx.drawImage(this.image, this.sett.x, this.sett.y, this.size, this.size);
 
-        if(this.sett.general.isFrameVisible)
+        if(isGizmoVisible)
             this.ctx.stroke(this.shape);
 
         if(isNameVisible)

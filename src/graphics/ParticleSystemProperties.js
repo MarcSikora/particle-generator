@@ -5,9 +5,7 @@ class ParticleSystemProperties
         this.x = 800;
         this.y = 400;
         this.source = {
-            
             isTransparent: true,
-            isHidden: false,
             shape: 0,
             scale: 5
         }

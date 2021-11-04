@@ -64,11 +64,11 @@ class ParticleSystem
         return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed);
     }
 
-    draw(isNameVisible)
+    draw(isNameVisible, isGizmoVisible)
     {
         this.drawParticles();
 
-        if(!this.sett.source.isHidden)
+        if(isGizmoVisible)
             this.drawSource();
         if(isNameVisible)
             this.drawName();
