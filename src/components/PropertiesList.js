@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './PropertiesList.css'
+import General from './properties/General';
 import Background from './properties/Background';
 import Source from './properties/Source';
 import Particles from './properties/Particles';
@@ -26,6 +27,7 @@ export class PropertiesList extends Component {
 
     getProperties()
     {
+
         if(this.props.selected)
         {
             if(this.props.selected.type === "particleSystems")
@@ -46,9 +48,12 @@ export class PropertiesList extends Component {
                     </div>
                 );
             else
-                (
+                return (
                     <div>
-                        elo
+                        <General
+                            values={this.props.selectedObject.sett.general}
+                            onChange={this.handleChange}
+                        ></General>
                     </div>
                 )
         }
