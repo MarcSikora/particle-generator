@@ -5,6 +5,7 @@ import Display from './components/Display';
 import PropertiesList from './components/PropertiesList';
 import UI from './components/ui/UI';
 import ParticleSystem from './graphics/ParticleSystem';
+import Object2D from './graphics/Object2D';
 
 export class App extends Component
 {
@@ -25,11 +26,12 @@ export class App extends Component
         this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleChangePropertiesList = this.handleChangePropertiesList.bind(this);
 		this.handleChangeBackground = this.handleChangeBackground.bind(this);
-		this.handleChangeSourcePosition = this.handleChangeSourcePosition.bind(this);
-		this.handleChangePsProperty = this.handleChangePsProperty.bind(this);
+		this.handleChangePosition = this.handleChangePosition.bind(this);
+		this.handleChangeProperty = this.handleChangeProperty.bind(this);
 		this.handleChangeSelected = this.handleChangeSelected.bind(this);
+
         this.addParticleSystem = this.addParticleSystem.bind(this);
-		
+        this.addObject2D = this.addObject2D.bind(this);
 		this.toggleValue = this.toggleValue.bind(this);
 	}
 
@@ -58,7 +60,7 @@ export class App extends Component
 		this.setState({selected: null});
 
 		this.setState(state => {
-			let obj = {}
+			let obj = {};
 			obj[type] = state[type].filter((ps, i) => i !== index);
 			return obj;
 		});
@@ -67,7 +69,7 @@ export class App extends Component
 	handleChangePropertiesList(propertyName, inputName, value)
 	{
 		this.setState(state => {
-			let type = this.state.selected.type
+			let type = this.state.selected.type;
 			let index = this.state.selected.index;
 			state[type][index].sett[propertyName][inputName] = value;
 
@@ -82,20 +84,33 @@ export class App extends Component
 		this.setState({backgroundColor: value});
 	}
 
-	handleChangeSourcePosition(index, x, y)
+	handleChangePosition(grabbed, x, y)
 	{
 		this.setState(state => {
-			state.particleSystems[index].sett.source.x = x;
-			state.particleSystems[index].sett.source.y = y;
-			return {particleSystems: state.particleSystems}
+			if(grabbed.type === "particleSystems")
+			{
+				state.particleSystems[grabbed.index].sett.source.x = x;
+				state.particleSystems[grabbed.index].sett.source.y = y;
+			}
+			else
+			{
+				state.objects2D[grabbed.index].sett.x = x;
+				state.objects2D[grabbed.index].sett.y = y;
+			}
+			
+			let obj = {};
+			obj[grabbed.type] = state[grabbed.type]
+			return obj;
 		});
 	}
 
-	handleChangePsProperty(index, propertyName, value)
+	handleChangeProperty(type, index, propertyName, value)
 	{
 		this.setState(state => {
-			state.particleSystems[index][propertyName] = value;
-			return {particleSystems: state.particleSystems}
+			state[type][index][propertyName] = value;
+			let obj = {};
+			obj[type] = state[type];
+			return obj;
 		});
 	}
 
@@ -109,13 +124,15 @@ export class App extends Component
 		});
 
 		this.setState(state => {
-			let previous = state.particleSystems.find(ps => ps.isSelected);
+			let previous = state[type].find(ps => ps.isSelected);
 			
 			if(previous)
 				previous.isSelected = false;
-			state.particleSystems[index].isSelected = true;
-
-			return {particleSystems: state.particleSystems}
+			state[type][index].isSelected = true;
+			
+			let obj = {};
+			obj[type] = state[type]
+ 			return obj;
 		});
 	}
 
@@ -127,6 +144,17 @@ export class App extends Component
 			return {particleSystems: state.particleSystems.concat(new ParticleSystem(this.psLastId))}
 		}, () => {
 			this.handleChangeSelected("particleSystems", this.state.particleSystems.length - 1)
+		});
+	}
+
+	addObject2D()
+	{
+		this.objectLastId++;
+
+		this.setState(state => {
+			return {objects2D: state.objects2D.concat(new Object2D(this.objectLastId))}
+		}, () => {
+			this.handleChangeSelected("objects2D", this.state.objects2D.length - 1)
 		});
 	}
 
@@ -147,13 +175,14 @@ export class App extends Component
 				<UI 
 					toggleValue={this.toggleValue}
 					addParticleSystem={this.addParticleSystem}
+					addObject2D={this.addObject2D}
 					particleSystemsCount={this.state.particleSystems.length}
 					objectsCount={this.state.objects2D.length}
 				></UI>
 				<Display 
 					{...this.state}
-					onChangeSourcePosition={this.handleChangeSourcePosition}
-					onChangePsProperty={this.handleChangePsProperty}
+					onChangePosition={this.handleChangePosition}
+					onChangeProperty={this.handleChangeProperty}
 					onChangeSelected={this.handleChangeSelected}
 				></Display>
 				<PropertiesList 

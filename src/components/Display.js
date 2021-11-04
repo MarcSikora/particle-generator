@@ -9,10 +9,10 @@ export class Display extends Component {
         this.canvas = React.createRef();
         this.display = React.createRef();
         this.ctx = null;
-        this.grabbed = -1;
+        this.grabbed = null;
         this.grabbedOffset = {
-            x: 20,
-            y: 30
+            x: 0,
+            y: 0
         }
 
         this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -25,18 +25,15 @@ export class Display extends Component {
         this.ctx = this.canvas.current.getContext("2d");
         this.time = Date.now();
         this.resize();
-
-        this.props.particleSystems.forEach(ps => {
-            ps.generateShape(this.ctx);
-            ps.prepareParticleImage();
-        });
-        
-        this.draw();
         window.requestAnimationFrame(() => this.animate());
     }
 
     componentDidUpdate()
     {
+        this.props.objects2D.forEach(obj => {
+            obj.prepare(this.ctx);
+        });
+
         this.props.particleSystems.forEach(ps => {
             ps.generateShape(this.ctx);
             ps.prepareParticleImage();
@@ -102,43 +99,60 @@ export class Display extends Component {
             if(this.props.isNameVisible)
                 ps.drawName();
         });
+
+        this.props.objects2D.forEach(obj => {
+            obj.draw();
+
+            if(this.props.isNameVisible)
+                obj.drawName();
+        });
     }
 
     handleMouseMove(e)
     {
-        if(this.grabbed > -1)
+        if(this.grabbed)
             this.move(e.clientX, e.clientY);
         else
         {
-            for(let i = 0; i < this.props.particleSystems.length; i++)
-                if(this.ctx.isPointInPath(this.props.particleSystems[i].shape, e.clientX, e.clientY))
-                {
-                    this.hover(i, e.clientX, e.clientY);
-                    break;
-                }    
-                else
-                    this.display.current.style.cursor = "default"
+            if(!this.isMouseOver("particleSystems", e.clientX, e.clientY))
+                if(!this.isMouseOver("objects2D", e.clientX, e.clientY))
+                    this.display.current.style.cursor = "default";
         }
-            
+    }
+
+    isMouseOver(type, x, y)
+    {
+        for(let i = 0; i < this.props[type].length; i++)
+            if(this.ctx.isPointInPath(this.props[type][i].shape, x, y))
+            {
+                this.hover(type, i);
+                return true;
+            }
+        return false;
     }
 
     handleMouseDown(e)
     {
-        for(let i = 0; i < this.props.particleSystems.length; i++)
-        {
-            let ps = this.props.particleSystems[i];
-
+        this.props.particleSystems.forEach((ps, i) => {
             if(this.ctx.isPointInPath(ps.shape, e.clientX, e.clientY))
             {
                 this.select("particleSystems", i);
-                this.grab(ps.sett.source.x, ps.sett.source.y, i, e.clientX, e.clientY);
+                this.grab("particleSystems", i, ps.sett.source.x, ps.sett.source.y, e.clientX, e.clientY);
             }
-        }
+        });
+
+        this.props.objects2D.forEach((obj, i) => {
+            if(this.ctx.isPointInPath(obj.shape, e.clientX, e.clientY))
+            {
+                this.select("objects2D", i);
+                this.grab("objects2D", i, obj.sett.x, obj.sett.y, e.clientX, e.clientY);
+            }
+        });
     }
 
     handleMouseUp(e)
     {
-        if(this.grabbed > -1)
+        if(this.grabbed)
             this.ungrab();
     }
 
@@ -147,23 +161,27 @@ export class Display extends Component {
         this.props.onChangeSelected(type, index);
     }
 
-    hover(index, x, y)
+    hover(type, index)
     {
-        this.props.onChangePsProperty(index, "isHovered", true);
-        let ps = this.props.particleSystems[index];
+        this.props.onChangeProperty(type, index, "isHovered", true);
+        let ps = this.props[type][index];
         this.display.current.style.cursor = (ps.isGrabbed) ? "grabbing" : "grab"
     }
 
     move(x, y)
     {
-        this.props.onChangeSourcePosition(this.grabbed, x + this.grabbedOffset.x, y + this.grabbedOffset.y);
+        this.props.onChangePosition(this.grabbed, x + this.grabbedOffset.x, y + this.grabbedOffset.y);
     }
 
-    grab(objectX, objectY, index, mouseX, mouseY)
+    grab(type, index, objectX, objectY, mouseX, mouseY)
     {
-        this.props.onChangePsProperty(index, "isGrabbed", true);
-        this.grabbed = index;
+        this.props.onChangeProperty(type, index, "isGrabbed", true);
         this.display.current.style.cursor = "grabbing";
+
+        this.grabbed = {
+            type: type,
+            index: index
+        };
 
         this.grabbedOffset = {
             x: objectX - mouseX,
@@ -173,9 +191,9 @@ export class Display extends Component {
 
     ungrab()
     {
-        this.props.onChangePsProperty(this.grabbed, "isGrabbed", false);
+        this.props.onChangeProperty(this.grabbed.type, this.grabbed.index, "isGrabbed", false);
         this.display.current.style.cursor = "grab";
-        this.grabbed = -1;
+        this.grabbed = null;
     }
 
     resize()
@@ -195,7 +213,9 @@ export class Display extends Component {
 
     render() {
         return (
-            <div className="Display" ref={this.display} 
+            <div 
+                className="Display" 
+                ref={this.display} 
                 onMouseMove={this.handleMouseMove}
                 onMouseDown={this.handleMouseDown}
                 onMouseUp={this.handleMouseUp}
