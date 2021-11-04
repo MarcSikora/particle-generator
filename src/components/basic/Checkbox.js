@@ -15,7 +15,6 @@ export class Checkbox extends Component {
     }
     
     render() {
-        // console.log(this.props.value)
         return (
             <div className="Checkbox">
                 <label>{this.props.label}</label>
