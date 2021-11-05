@@ -1,16 +1,21 @@
 .Info {
+    background-color: #353348;
     color: gray;
     font-size: 10pt;
     position: absolute;
-    bottom: 10px;
-    right: 400px;
+    bottom: 0;
+    left: 0;
     display: flex;
     justify-content: space-between;
-    width: calc(100% - 500px);
+    width: 100%;
+    border-top: 1px solid gray;
+
 }
 
 .Info--manual {
     display: flex;
+    padding: 5px;
+
 }
 
 .Info--manual-item {
@@ -24,4 +29,8 @@
 
 .Info--manual-description {
 
+}
+
+.Info--counters {
+    padding: 5px;
 }

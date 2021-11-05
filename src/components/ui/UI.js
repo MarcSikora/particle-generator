@@ -28,7 +28,7 @@ export class UI extends Component {
         let visibility = (this.state.isVisible) ? "visible" : "hidden";
 
         return (
-            <div>
+            <div className="UI">
                 <HideButton
                     onChange={this.toggleUI}
                 ></HideButton>
@@ -38,12 +38,12 @@ export class UI extends Component {
                         addObject2D={this.addObject2D}
                         toggleValue={this.toggleValue}
                     ></MainButtons>
-                    <Info
-                        particleSystemsCount={this.props.particleSystemsCount}
-                        objectsCount={this.props.objectsCount}
-                    ></Info>
                     <GithubLink></GithubLink>
                 </div>
+                <Info
+                    particleSystemsCount={this.props.particleSystemsCount}
+                    objectsCount={this.props.objectsCount}
+                ></Info>
             </div>
         )
     }
