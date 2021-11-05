@@ -21,9 +21,9 @@ export class PropertiesList extends Component {
         this.props.onChange(propertyName, inputName, value);
     }
 
-    handleChangeBackground(value)
+    handleChangeBackground(inputName, value)
     {
-        this.props.onChangeBackground(value);
+        this.props.onChangeBackground(inputName, value);
     }
 
     getProperties()
@@ -65,7 +65,7 @@ export class PropertiesList extends Component {
         return (
             <div className="PropertiesList">
                 <Background
-                    value={this.props.backgroundColor}
+                    values={this.props.background}
                     onChange={this.handleChangeBackground}
                 ></Background>
                 {this.getProperties()}
