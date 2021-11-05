@@ -62,7 +62,7 @@ export class Display extends Component {
                 for(let i = 0; i < ps.particles.length; i++)
                 {                    
                     // ps.particles[i].scale += ps.particles[i].life * 0.1;
-                    let z = (ps.particles[i].direction * Math.PI/180)
+                    let z = (ps.sett.particles.direction * Math.PI/180)
                     ps.particles[i].y += Math.sin(z) * ps.particles[i].speed;
                     ps.particles[i].x += Math.cos(z) * ps.particles[i].speed;
                     ps.particles[i].life += 0.001;

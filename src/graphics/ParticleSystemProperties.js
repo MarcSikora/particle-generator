@@ -10,7 +10,8 @@ class ParticleSystemProperties
             scale: 5
         }
         this.particles = {
-            amount: 10
+            amount: 10,
+            direction: 0
         }
         this.particle = {
             image: 0,

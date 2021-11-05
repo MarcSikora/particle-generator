@@ -28,6 +28,15 @@ export class Particles extends Component {
                     inputName="amount" 
                     onChange={this.handleChange}>
                 </Range>
+                <Range 
+                    label="Direction:"
+                    value={this.props.values.direction}
+                    min="0"
+                    step="5"
+                    max="360"
+                    inputName="direction" 
+                    onChange={this.handleChange}>
+                </Range>
             </Property>
         )
     }

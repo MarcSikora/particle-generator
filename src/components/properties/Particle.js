@@ -55,20 +55,11 @@ export class Particle extends Component {
                     onChange={this.handleChange}>
                 </Range>
                 <Range 
-                    label="Direction:"
-                    value={this.props.values.direction}
-                    min="0"
-                    step="1"
-                    max="360"
-                    inputName="direction" 
-                    onChange={this.handleChange}>
-                </Range>
-                <Range 
-                    label="Life span:"
+                    label="Lifespan:"
                     value={this.props.values.lifespan}
                     min="0.1"
                     step="0.1"
-                    max="1"
+                    max="5"
                     inputName="lifeSpan" 
                     onChange={this.handleChange}>
                 </Range>
