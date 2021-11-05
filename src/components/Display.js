@@ -22,23 +22,33 @@ export class Display extends Component {
     
     componentDidMount()
     {
+        window.addEventListener("resize", () => {
+            this.resize();
+        });
+        
         this.ctx = this.canvas.current.getContext("2d");
         this.time = Date.now();
         this.resize();
+        
         window.requestAnimationFrame(() => this.animate());
     }
 
     componentDidUpdate()
+    {
+        this.updateBackgroundImage();
+
+        this.props.objects.forEach(obj => {
+            obj.prepare(this.ctx);
+        });
+    }
+
+    updateBackgroundImage()
     {
         if(this.previousImg !== this.props.background.image)
         {
             this.backgroundImage.src = this.im.backgroundImages[this.props.background.image];
             this.previousImg = this.props.background.image;
         }
-
-        this.props.objects.forEach(obj => {
-            obj.prepare(this.ctx);
-        });
     }
 
     animate()
@@ -208,11 +218,10 @@ export class Display extends Component {
                     style={{
                         backgroundColor:this.props.background.color,
                         backgroundImage: `url(${this.im.backgroundImages[this.props.background.image]})`,
-                        backgroundPosition: "center",
                         backgroundSize: "cover"
                     }}
                 >
-                 </canvas>
+                </canvas>
             </div>
         )
     }

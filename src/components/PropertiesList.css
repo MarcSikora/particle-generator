@@ -1,6 +1,6 @@
 .PropertiesList {
     background-color: #353348;
-    min-width: 350px;
+    width: 350px;
     padding: 10px;
     overflow-y: scroll;
     -ms-overflow-style: none;  /* IE and Edge */

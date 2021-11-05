@@ -1,3 +1,9 @@
 .Display {
+    background: red;
     flex: 1;
+    display: flex;
+}
+
+.Display--canvas {
+    width: 100%;
 }
