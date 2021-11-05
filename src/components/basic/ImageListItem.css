@@ -12,6 +12,7 @@
     width: 32px;
     height: 32px;
     margin: 5px;
+    border: 1px solid dimgray;
 }
 
 .ImageListItem--img:hover {
