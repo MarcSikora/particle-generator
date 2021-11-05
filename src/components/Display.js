@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ImageManager from '../graphics/ImageManager';
 import ParticleSystem from '../graphics/ParticleSystem';
 import './Display.css'
 
@@ -10,7 +11,10 @@ export class Display extends Component {
         this.canvas = React.createRef();
         this.display = React.createRef();
         this.ctx = null;
-        
+        this.im = new ImageManager();
+        this.backgroundImage = new Image();
+        this.previousImg = null;
+
         this.handleMouseMove = this.handleMouseMove.bind(this);
         this.handleMouseDown = this.handleMouseDown.bind(this);
         this.handleMouseUp = this.handleMouseUp.bind(this);
@@ -26,6 +30,12 @@ export class Display extends Component {
 
     componentDidUpdate()
     {
+        if(this.previousImg !== this.props.background.image)
+        {
+            this.backgroundImage.src = this.im.backgroundImages[this.props.background.image];
+            this.previousImg = this.props.background.image;
+        }
+
         this.props.objects.forEach(obj => {
             obj.prepare(this.ctx);
         });
@@ -52,7 +62,9 @@ export class Display extends Component {
                 for(let i = 0; i < ps.particles.length; i++)
                 {                    
                     // ps.particles[i].scale += ps.particles[i].life * 0.1;
-                    ps.particles[i].y += ps.particles[i].speed;
+                    let z = (ps.particles[i].direction * Math.PI/180)
+                    ps.particles[i].y += Math.sin(z) * ps.particles[i].speed;
+                    ps.particles[i].x += Math.cos(z) * ps.particles[i].speed;
                     ps.particles[i].life += 0.001;
                     
                     if(this.isPointOut(ps.particles[i].x, ps.particles[i].y))
@@ -80,12 +92,18 @@ export class Display extends Component {
 
     draw()
     {
-        this.ctx.fillStyle = this.props.backgroundColor;
-        this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height);
+        this.clear();
+        // this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height);
+        // this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.current.width, this.canvas.current.height);
 
         this.props.objects.forEach(obj => {
             obj.draw(this.props.isNameVisible, this.props.isGizmoVisible);
         });
+    }
+
+    clear()
+    {
+        this.ctx.clearRect(0, 0, this.canvas.current.width, this.canvas.current.height)
     }
 
     handleMouseMove(e)
@@ -184,7 +202,17 @@ export class Display extends Component {
                 onMouseUp={this.handleMouseUp}
                 onKeyDown={this.handleKeyDown}
                 >
-                <canvas className="Display--canvas" ref={this.canvas}></canvas>
+                <canvas 
+                    className="Display--canvas" 
+                    ref={this.canvas} 
+                    style={{
+                        backgroundColor:this.props.background.color,
+                        backgroundImage: `url(${this.im.backgroundImages[this.props.background.image]})`,
+                        backgroundPosition: "center",
+                        backgroundSize: "cover"
+                    }}
+                >
+                 </canvas>
             </div>
         )
     }
