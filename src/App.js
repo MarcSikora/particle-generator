@@ -16,7 +16,10 @@ export class App extends Component
 			isRunning: true,
 			isNameVisible: false,
 			isGizmoVisible: true,
-			backgroundColor: "#403d58",
+			background: {
+				color: "#403d58",
+				image: 0
+			},
 			objects: [],
 			objects2DCounter: 0,
 			particleSystemsCounter: 0,
@@ -112,9 +115,12 @@ export class App extends Component
 		})
 	}
 
-	handleChangeBackground(value)
+	handleChangeBackground(inputName, value)
 	{
-		this.setState({backgroundColor: value});
+		this.setState(state => {
+			state.background[inputName] = value;
+			return { background: state.background}
+		});
 	}
 
 	handleChangePosition(grabbed, x, y)
@@ -221,7 +227,7 @@ export class App extends Component
 					onChangeGrabbed={this.handleChangeGrabbed}
 				></Display>
 				<PropertiesList 
-					backgroundColor={this.state.backgroundColor}
+					background={this.state.background}
 					selectedObject={selectedObject}
 					onChange={this.handleChangePropertiesList}
 					onChangeBackground={this.handleChangeBackground}
