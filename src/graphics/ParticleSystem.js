@@ -61,7 +61,7 @@ class ParticleSystem
     generateParticle()
     {
         let point = this.getRandomPointInBounds();        
-        return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed);
+        return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed, this.sett.particle.direction);
     }
 
     draw(isNameVisible, isGizmoVisible)
