@@ -18,10 +18,21 @@ import tree_01 from '../assets/tree_01.png';
 import house_01 from '../assets/house_01.png';
 import chimney_01 from '../assets/chimney_01.png';
 
+import mountains_01 from '../assets/mountains_01.png';
+import desert_01 from '../assets/desert_01.png';
+import empty from '../assets/empty.png';
+
+
 class ImageManager
 {
     constructor()
     {
+        this.backgroundImages = [
+            empty,
+            mountains_01,
+            desert_01,
+        ];
+
         this.sourceShapes = [
             squareImg,
             circleImg,
@@ -47,6 +58,11 @@ class ImageManager
             house_01,
             chimney_01
         ];
+    }
+
+    getBackgroundImagesData()
+    {
+        return this.getData(this.backgroundImages, "background image");
     }
 
     getParticleImagesData()
