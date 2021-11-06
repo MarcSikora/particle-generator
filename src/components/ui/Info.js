@@ -15,11 +15,11 @@ export class Info extends Component {
                         <span className="Info--manual-description"> - remove object</span>
                     </div>
                     <div className="Info--manual-item">
-                        <span className="Info--manual-key">W/ArrowUp</span>
+                        <span className="Info--manual-key">W</span>
                         <span className="Info--manual-description"> - move object layer up</span>
                     </div>
                     <div className="Info--manual-item">
-                        <span className="Info--manual-key">S/ArrowUp</span>
+                        <span className="Info--manual-key">S</span>
                         <span className="Info--manual-description"> - move object layer down</span>
                     </div>
                 </div>
