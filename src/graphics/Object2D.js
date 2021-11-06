@@ -11,19 +11,20 @@ class Object2D
         this.defaultSize = 32;
         this.size = 32;
         this.shape = null;
-        this.isHovered = false;
         this.isSelected = false;
         this.isGrabbed = false;
 
         this.im = new ImageManager();
         this.image = new Image();
         this.previousType = -1;
+
     }
 
     prepare(ctx)
     {
         this.ctx = ctx;
         this.size = this.defaultSize * this.sett.general.scale;
+
         if(this.previous !== this.sett.general.type)
         {
             this.image.src = this.im.objectImages[this.sett.general.type];
@@ -38,8 +39,9 @@ class Object2D
 
         this.shape = new Path2D();
         this.shape.rect(this.sett.x, this.sett.y, this.size, this.size);
-        this.ctx.drawImage(this.image, this.sett.x, this.sett.y, this.size, this.size);
 
+        this.ctx.drawImage(this.image, this.sett.x, this.sett.y, this.size, this.size);
+        
         if(isGizmoVisible)
             this.ctx.stroke(this.shape);
 
