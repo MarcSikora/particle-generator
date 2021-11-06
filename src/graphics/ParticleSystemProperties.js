@@ -11,7 +11,8 @@ class ParticleSystemProperties
         }
         this.particles = {
             amount: 10,
-            direction: 0
+            direction: 0,
+            scaleOverTime: 0
         }
         this.particle = {
             image: 0,
@@ -19,7 +20,7 @@ class ParticleSystemProperties
             scale: 1,
             direction: 0,
             speed: 1,
-            lifespan: 1,
+            lifespan: 10,
             emissionColor: "#00e1ff",
             emissionRadius: 0
         }
