@@ -15,7 +15,6 @@ class ParticleSystem
         this.time = 0;
 
         this.shape = null;
-        this.isHovered = false;
         this.isSelected = false;
         this.isGrabbed = false;
 
@@ -61,7 +60,7 @@ class ParticleSystem
     generateParticle()
     {
         let point = this.getRandomPointInBounds();        
-        return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed, this.sett.particle.direction);
+        return new Particle(point.x, point.y, this.sett.particle.scale, this.sett.particle.speed, this.sett.particle.lifespan);
     }
 
     draw(isNameVisible, isGizmoVisible)
@@ -188,8 +187,19 @@ class ParticleSystem
 
             this.drawEmission(p.x, p.y);
 
-            this.ctx.fillStyle = this.sett.particle.color;
-            this.ctx.drawImage(this.particleImg, p.x - size*0.5, p.y - size*0.5, size, size)
+            this.ctx.drawImage(this.particleImg, p.x - size*0.5, p.y - size*0.5, size, size);
+
+            // let imgData = this.ctx.getImageData(p.x - size*0.5, p.y - size*0.5, size, size);
+            // let data = imgData.data;
+            // let rgb = this.sett.particle.color;
+
+            // for (let i = 0; i < data.length; i += 4) 
+            // {
+            //     data[i]     = 255 - data[i];     // red
+            //     data[i + 1] = 255 - data[i + 1]; // green
+            //     data[i + 2] = 255 - data[i + 2]; // blue
+            // }
+            // this.ctx.putImageData(imgData, p.x - size*0.5, p.y - size*0.5);
         }
     }
 
@@ -199,7 +209,7 @@ class ParticleSystem
         let gradient = this.ctx.createRadialGradient(x,y,0.5, x,y,r);
 
         gradient.addColorStop(0.5, this.sett.particle.emissionColor);
-        gradient.addColorStop(1, this.hex2rgba(this.sett.particle.emissionColor, 0));
+        gradient.addColorStop(1, this.hex2rgbaString(this.sett.particle.emissionColor, 0));
 
         this.ctx.fillStyle = gradient;
         this.ctx.fillRect(x-r, y-r, r*2, r*2);
@@ -211,13 +221,17 @@ class ParticleSystem
         this.particleImg.src = imgs[this.sett.particle.image];
     }
 
-    hex2rgba(hex,alpha)
+    hex2rgbaString(hex, alpha)
     {
-        let rgb = hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i,(m, r, g, b) => '#' + r + r + g + g + b + b)
-        .substring(1).match(/.{2}/g)
-        .map(x => parseInt(x, 16))
-
+        let rgb = this.hex2rgb(hex);
         return "rgba(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "," + alpha + ")";
+    }
+
+    hex2rgb(hex)
+    {
+        return hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i,(m, r, g, b) => '#' + r + r + g + g + b + b)
+        .substring(1).match(/.{2}/g)
+        .map(x => parseInt(x, 16));
     }
 }
 
