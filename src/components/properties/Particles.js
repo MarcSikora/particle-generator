@@ -37,6 +37,15 @@ export class Particles extends Component {
                     inputName="direction" 
                     onChange={this.handleChange}>
                 </Range>
+                <Range 
+                    label="Scale over time:"
+                    value={this.props.values.scaleOverTime}
+                    min="0"
+                    step="1"
+                    max="10"
+                    inputName="scaleOverTime" 
+                    onChange={this.handleChange}>
+                </Range>
             </Property>
         )
     }
