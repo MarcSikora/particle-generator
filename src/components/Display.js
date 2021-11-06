@@ -12,6 +12,7 @@ export class Display extends Component {
         this.display = React.createRef();
         this.ctx = null;
         this.im = new ImageManager();
+
         this.backgroundImage = new Image();
         this.previousImg = null;
 
@@ -71,13 +72,19 @@ export class Display extends Component {
 
                 for(let i = 0; i < ps.particles.length; i++)
                 {                    
-                    // ps.particles[i].scale += ps.particles[i].life * 0.1;
+                    
                     let z = (ps.sett.particles.direction * Math.PI/180)
                     ps.particles[i].y += Math.sin(z) * ps.particles[i].speed;
                     ps.particles[i].x += Math.cos(z) * ps.particles[i].speed;
-                    ps.particles[i].life += 0.001;
-                    
-                    if(this.isPointOut(ps.particles[i].x, ps.particles[i].y))
+
+                    let life = Date.now() - ps.particles[i].born;
+                    if(ps.sett.particles.scaleOverTime > 0)
+                    {
+                        ps.particles[i].scale = life * ps.sett.particles.scaleOverTime * 0.0001;
+
+                    }
+
+                    if(life > ps.particles[i].lifespan*1000)
                         toRemove.push(i);
                 }
 
@@ -90,21 +97,9 @@ export class Display extends Component {
         window.requestAnimationFrame(() => this.animate());
     }
 
-    isPointOut(x, y)
-    {
-        return (
-            y < 0 || 
-            y > this.canvas.current.height || 
-            x < 0 || 
-            x > this.canvas.current.width
-        );
-    }
-
     draw()
     {
         this.clear();
-        // this.ctx.fillRect(0, 0, this.canvas.current.width, this.canvas.current.height);
-        // this.ctx.drawImage(this.backgroundImage, 0, 0, this.canvas.current.width, this.canvas.current.height);
 
         this.props.objects.forEach(obj => {
             obj.draw(this.props.isNameVisible, this.props.isGizmoVisible);
@@ -162,7 +157,6 @@ export class Display extends Component {
 
     hover(index)
     {
-        this.props.onChangeProperty(index, "isHovered", true);
         let obj = this.props.objects[index];
         this.display.current.style.cursor = (obj.isGrabbed) ? "grabbing" : "grab"
     }
@@ -192,6 +186,7 @@ export class Display extends Component {
         let style = getComputedStyle(this.display.current);
         this.canvas.current.width = parseInt(style.width);
         this.canvas.current.height = parseInt(style.height);
+        this.draw();
     }
 
     getCanvasCenter()
