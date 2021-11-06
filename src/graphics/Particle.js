@@ -1,12 +1,13 @@
 class Particle
 {
-    constructor(x, y, scale, speed)
+    constructor(x, y, scale, speed, lifespan)
     {
         this.x = x;
         this.y = y;
         this.scale = scale;
         this.speed = speed;
-        this.lifespan = 1;
+        this.born = Date.now();
+        this.lifespan = lifespan;
         this.life = 0;
         this.size = 8;
     }
