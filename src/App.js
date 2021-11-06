@@ -56,17 +56,14 @@ export class App extends Component
     {
         switch(e.keyCode)
         {
-            case 88:  //X
-                this.removeSelected();
+            case 68:  //D
+                this.duplicateObject();
                 break;
-			case 38:  //ArrowUp
-				this.moveLayer(1);
+			case 88:  //X
+                this.removeSelected();
                 break;
 			case 87:  //W
                 this.moveLayer(1);
-                break;
-			case 40:  //ArrowDown
-				this.moveLayer(-1);
                 break;
 			case 83:  //S
                 this.moveLayer(-1);
@@ -91,6 +88,16 @@ export class App extends Component
 			};
 		});
     }
+
+	duplicateObject()
+	{
+		let originalObject = this.state.objects[this.state.selected];
+
+		if(originalObject instanceof Object2D)
+			this.addObject2D(originalObject);
+		else
+			this.addParticleSystem(originalObject);
+	}
 
 	moveLayer(direction)
 	{
@@ -166,32 +173,40 @@ export class App extends Component
 		});
 	}
 
-	addParticleSystem()
+	addParticleSystem(originalObject)
 	{
 		this.psLastId++;
+
+		let obj = new ParticleSystem(this.psLastId);
+		if(originalObject)
+			obj.sett = JSON.parse(JSON.stringify(originalObject.sett));
 
 		this.setState(state => {
 			state.particleSystemsCounter++
 
 			return {
 				particleSystemsCounter: state.particleSystemsCounter,
-				objects: state.objects.concat(new ParticleSystem(this.psLastId))
+				objects: state.objects.concat(obj)
 			}
 		}, () => {
 			this.handleChangeSelected(this.state.objects.length - 1)
 		});
 	}
 
-	addObject2D()
+	addObject2D(originalObject)
 	{
 		this.objectLastId++;
+
+		let obj = new Object2D(this.objectLastId);
+		if(originalObject)
+			obj.sett = JSON.parse(JSON.stringify(originalObject.sett));
 
 		this.setState(state => {
 			state.objects2DCounter++
 
 			return {
 				objects2DCounter: state.objects2DCounter,
-				objects: state.objects.concat(new Object2D(this.objectLastId))
+				objects: state.objects.concat(obj)
 			}
 		}, () => {
 			this.handleChangeSelected(this.state.objects.length - 1)
