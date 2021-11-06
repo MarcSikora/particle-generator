@@ -30,12 +30,12 @@ export class Particle extends Component {
                     onChange={this.handleChange} 
                     items={this.images}>
                 </ImageList>
-                <ColorPicker 
+                {/* <ColorPicker 
                     label="Color:"
                     value={this.props.values.color}
                     inputName="color" 
                     onChange={this.handleChange}>
-                </ColorPicker>
+                </ColorPicker> */}
                 <Range 
                     label="Scale:"
                     value={this.props.values.scale}
@@ -59,8 +59,8 @@ export class Particle extends Component {
                     value={this.props.values.lifespan}
                     min="0.1"
                     step="0.1"
-                    max="5"
-                    inputName="lifeSpan" 
+                    max="20"
+                    inputName="lifespan" 
                     onChange={this.handleChange}>
                 </Range>
                 <ColorPicker 
