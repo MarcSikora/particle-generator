@@ -21,8 +21,8 @@ export class App extends Component
 				image: 0
 			},
 			objects: [],
-			objects2DCounter: 0,
-			particleSystemsCounter: 0,
+			objects2DCount: 0,
+			particleSystemsCount: 0,
 			selected: -1,
 			grabbed: {
 				index: -1,
@@ -86,7 +86,7 @@ export class App extends Component
 				},
 				objects: state.objects.filter((o, i) => i !== index)
 			};
-		});
+		}, () => this.updateCounters());
     }
 
 	duplicateObject()
@@ -176,41 +176,44 @@ export class App extends Component
 	addParticleSystem(originalObject)
 	{
 		this.psLastId++;
-
-		let obj = new ParticleSystem(this.psLastId);
-		if(originalObject)
-			obj.sett = JSON.parse(JSON.stringify(originalObject.sett));
-
-		this.setState(state => {
-			state.particleSystemsCounter++
-
-			return {
-				particleSystemsCounter: state.particleSystemsCounter,
-				objects: state.objects.concat(obj)
-			}
-		}, () => {
-			this.handleChangeSelected(this.state.objects.length - 1)
-		});
+		this.addObject(originalObject, new ParticleSystem(this.psLastId));
 	}
 
 	addObject2D(originalObject)
 	{
 		this.objectLastId++;
+		this.addObject(originalObject, new Object2D(this.objectLastId));
+	}
 
-		let obj = new Object2D(this.objectLastId);
+	addObject(originalObject, obj)
+	{
 		if(originalObject)
 			obj.sett = JSON.parse(JSON.stringify(originalObject.sett));
 
 		this.setState(state => {
-			state.objects2DCounter++
-
-			return {
-				objects2DCounter: state.objects2DCounter,
-				objects: state.objects.concat(obj)
-			}
+			return {objects: state.objects.concat(obj)}
 		}, () => {
-			this.handleChangeSelected(this.state.objects.length - 1)
+			this.handleChangeSelected(this.state.objects.length - 1);
+			this.updateCounters();
 		});
+	}
+
+	updateCounters()
+	{
+		let objects2DCount = 0;
+		let particleSystemsCount = 0;
+
+		this.state.objects.forEach(o => {
+			if(o instanceof Object2D)
+				objects2DCount++;
+			else
+				particleSystemsCount++;
+		});
+
+		this.setState({
+			objects2DCount: objects2DCount,
+			particleSystemsCount: particleSystemsCount,
+		})
 	}
 
 	toggleValue(propertyName)
@@ -231,8 +234,8 @@ export class App extends Component
 					toggleValue={this.toggleValue}
 					addParticleSystem={this.addParticleSystem}
 					addObject2D={this.addObject2D}
-					particleSystemsCount={this.state.particleSystemsCounter}
-					objectsCount={this.state.objects2DCounter}
+					particleSystemsCount={this.state.particleSystemsCount}
+					objectsCount={this.state.objects2DCount}
 				></UI>
 				<Display 
 					{...this.state}
