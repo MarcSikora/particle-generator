@@ -14,11 +14,16 @@ import drop_03 from '../assets/drop_03.png';
 
 import cloud_01 from '../assets/cloud_01.png';
 import cloud_02 from '../assets/cloud_02.png';
+import cloud_03 from '../assets/cloud_03.png';
 import tree_01 from '../assets/tree_01.png';
+import tree_02 from '../assets/tree_02.png';
+import tree_03 from '../assets/tree_03.png';
 import house_01 from '../assets/house_01.png';
+import factory_01 from '../assets/factory_01.png';
 import chimney_01 from '../assets/chimney_01.png';
 
 import mountains_01 from '../assets/mountains_01.png';
+import mountains_02 from '../assets/mountains_02.png';
 import desert_01 from '../assets/desert_01.png';
 import empty from '../assets/empty.png';
 
@@ -30,6 +35,7 @@ class ImageManager
         this.backgroundImages = [
             empty,
             mountains_01,
+            mountains_02,
             desert_01,
         ];
 
@@ -54,8 +60,12 @@ class ImageManager
         this.objectImages = [
             cloud_01,
             cloud_02,
+            cloud_03,
             tree_01,
+            tree_02,
+            tree_03,
             house_01,
+            factory_01,
             chimney_01
         ];
     }
