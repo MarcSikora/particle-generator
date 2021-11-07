@@ -10,7 +10,7 @@ class ParticleSystem
         this.name = "ParticleSystem_" + last;
         this.ctx = null;
         this.sett = new ParticleSystemProperties();
-        this.defaultSize = 32;
+        this.defaultSize = 16;
         this.particles = [];
         this.time = 0;
 
