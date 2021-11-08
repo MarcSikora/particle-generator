@@ -1,9 +1,9 @@
 class ParticleSystemProperties
 {
-    constructor()
+    constructor(x, y)
     {
-        this.x = 800;
-        this.y = 400;
+        this.x = x;
+        this.y = y;
         this.source = {
             isTransparent: true,
             shape: 0,

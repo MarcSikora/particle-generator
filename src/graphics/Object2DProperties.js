@@ -1,10 +1,10 @@
 
 class Object2DProperties
 {
-    constructor()
+    constructor(x, y)
     {
-        this.x = 300;
-        this.y = 300;
+        this.x = x;
+        this.y = y;
         this.general = {
             type: 0,
             scale: 10,

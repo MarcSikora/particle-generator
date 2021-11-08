@@ -186,6 +186,7 @@ export class Display extends Component {
         let style = getComputedStyle(this.display.current);
         this.canvas.current.width = parseInt(style.width);
         this.canvas.current.height = parseInt(style.height);
+        this.props.onResize(this.getCanvasCenter());
         this.draw();
     }
 

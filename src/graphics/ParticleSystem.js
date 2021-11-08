@@ -5,11 +5,11 @@ import ParticleSystemProperties from './ParticleSystemProperties'
 
 class ParticleSystem
 {
-    constructor(last)
+    constructor(last, x, y)
     {
         this.name = "ParticleSystem_" + last;
         this.ctx = null;
-        this.sett = new ParticleSystemProperties();
+        this.sett = new ParticleSystemProperties(x, y);
         this.defaultSize = 16;
         this.particles = [];
         this.time = 0;

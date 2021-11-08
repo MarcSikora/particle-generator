@@ -3,11 +3,11 @@ import Object2DProperties from './Object2DProperties';
 
 class Object2D
 {
-    constructor(last)
+    constructor(last, x, y)
     {
         this.name = "Object2D_" + last;
         this.ctx = null;
-        this.sett = new Object2DProperties();
+        this.sett = new Object2DProperties(x, y);
         this.defaultSize = 32;
         this.size = 32;
         this.shape = null;
@@ -34,13 +34,14 @@ class Object2D
 
     draw(isNameVisible, isGizmoVisible)
     {
+        let x = this.sett.x - this.size*0.5;
+        let y = this.sett.y - this.size*0.5;
         this.ctx.strokeStyle = (this.isSelected) ? "yellow": "cyan";
         this.ctx.lineWidth = 1;
 
         this.shape = new Path2D();
-        this.shape.rect(this.sett.x, this.sett.y, this.size, this.size);
-
-        this.ctx.drawImage(this.image, this.sett.x, this.sett.y, this.size, this.size);
+        this.shape.rect(x, y, this.size, this.size);
+        this.ctx.drawImage(this.image, x, y, this.size, this.size);
         
         if(isGizmoVisible)
             this.ctx.stroke(this.shape);
@@ -51,10 +52,10 @@ class Object2D
 
     drawName()
     {
-        let x = this.sett.x;
-        let y = this.sett.y;
+        let x = this.sett.x + this.size*0.5 + 5;
+        let y = this.sett.y + this.size*0.5 - 2;
         this.ctx.fillStyle = "cyan";
-        this.ctx.fillText(this.name, x + this.size*0.5 + 5, y + this.size*0.5 - 2);
+        this.ctx.fillText(this.name, x, y);
     }
 }
 

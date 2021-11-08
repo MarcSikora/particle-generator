@@ -20,6 +20,7 @@ export class App extends Component
 				color: "#403d58",
 				image: 0
 			},
+			center: {x: 0, y: 0},
 			objects: [],
 			objects2DCount: 0,
 			particleSystemsCount: 0,
@@ -37,6 +38,7 @@ export class App extends Component
         this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleChangePropertiesList = this.handleChangePropertiesList.bind(this);
 		this.handleChangeBackground = this.handleChangeBackground.bind(this);
+		this.handleResize = this.handleResize.bind(this);
 		this.handleChangePosition = this.handleChangePosition.bind(this);
 		this.handleChangeProperty = this.handleChangeProperty.bind(this);
 		this.handleChangeSelected = this.handleChangeSelected.bind(this);
@@ -130,6 +132,11 @@ export class App extends Component
 		});
 	}
 
+	handleResize(center)
+	{
+		this.setState({center: center});
+	}
+
 	handleChangePosition(grabbed, x, y)
 	{
 		this.setState(state => {
@@ -176,13 +183,13 @@ export class App extends Component
 	addParticleSystem(originalObject)
 	{
 		this.psLastId++;
-		this.addObject(originalObject, new ParticleSystem(this.psLastId));
+		this.addObject(originalObject, new ParticleSystem(this.psLastId, this.state.center.x, this.state.center.y));
 	}
 
 	addObject2D(originalObject)
 	{
 		this.objectLastId++;
-		this.addObject(originalObject, new Object2D(this.objectLastId));
+		this.addObject(originalObject, new Object2D(this.objectLastId, this.state.center.x, this.state.center.y));
 	}
 
 	addObject(originalObject, obj)
@@ -239,6 +246,7 @@ export class App extends Component
 				></UI>
 				<Display 
 					{...this.state}
+					onResize={this.handleResize}
 					onChangePosition={this.handleChangePosition}
 					onChangeProperty={this.handleChangeProperty}
 					onChangeSelected={this.handleChangeSelected}
