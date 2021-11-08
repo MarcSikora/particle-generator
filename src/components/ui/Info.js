@@ -11,6 +11,10 @@ export class Info extends Component {
                         <span className="Info--manual-description"> - grab/move/select object</span>
                     </div>
                     <div className="Info--manual-item">
+                        <span className="Info--manual-key">D</span>
+                        <span className="Info--manual-description"> - duplicate object</span>
+                    </div>
+                    <div className="Info--manual-item">
                         <span className="Info--manual-key">X</span>
                         <span className="Info--manual-description"> - remove object</span>
                     </div>
