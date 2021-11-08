@@ -5,7 +5,6 @@ export class ColorPicker extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {value: ""}
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -13,7 +12,6 @@ export class ColorPicker extends Component {
     {
         const value = e.target.value;
         this.props.onChange(this.props.inputName, value);
-        this.setState({ value: value });
     }
 
     render() {

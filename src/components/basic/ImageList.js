@@ -6,7 +6,6 @@ export class ImageList extends Component {
     constructor(props)
     {
         super(props);
-        this.state = {value: 0}
         this.handleChange = this.handleChange.bind(this);
     }
 
