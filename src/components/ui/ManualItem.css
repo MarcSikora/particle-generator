@@ -1,0 +1,7 @@
+.ManualItem {
+    margin: 0 20px;
+}
+
+.ManualItem--key {
+    color: cyan;
+}

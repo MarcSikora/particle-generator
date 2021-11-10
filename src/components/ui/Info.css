@@ -12,25 +12,6 @@
 
 }
 
-.Info--manual {
-    display: flex;
-    padding: 5px;
-
-}
-
-.Info--manual-item {
-    margin: 0 20px;
-}
-
-
-.Info--manual-key {
-    color: cyan;
-}
-
-.Info--manual-description {
-
-}
-
 .Info--counters {
     padding: 5px;
 }
