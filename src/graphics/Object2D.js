@@ -52,8 +52,8 @@ class Object2D
 
     drawName()
     {
-        let x = this.sett.x + this.size*0.5 + 5;
-        let y = this.sett.y + this.size*0.5 - 2;
+        let x = this.sett.x + 5;
+        let y = this.sett.y - 2;
         this.ctx.fillStyle = "cyan";
         this.ctx.fillText(this.name, x, y);
     }
