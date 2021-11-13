@@ -2,7 +2,9 @@
 
 This application does not serve any specific purpose. It was made just for fun and to show off my React skills. 
 
-In order to understand how the app works, please watch short Preview below:
+Live example: https://marcsikora.github.io/projects/particle-generator/
+
+In order to understand how the app works, please watch short Preview below.
 
 ## Preview
 
@@ -60,3 +62,41 @@ https://user-images.githubusercontent.com/93472358/141620347-52b50789-f0e7-47b5-
 |---------------|-------------|
 | **Type** | changes object's type(image) |
 | **Scale** | changes object's scale |
+
+## Object2D Properties
+
+### General
+![object properties](./screenshots/object.png)
+| Property name | Description |
+|---------------|-------------|
+| **Type** | changes object's type(image) |
+| **Scale** | changes object's scale |
+
+## ParticleSystem Properties
+
+### Source
+![object properties](./screenshots/source.png)
+| Property name | Description |
+|---------------|-------------|
+| **Transparent** | if checked, ParticleSystem source is transparent |
+| **Shape** | source's shape |
+| **Scale** | source's scale |
+
+### Particles
+![object properties](./screenshots/particles.png)
+| Property name | Description |
+|---------------|-------------|
+| **Amount/s** | amount of particles generated per 1 second |
+| **Direction** | direction of particles movement (measured in degrees) |
+| **Scale over time** | change factor of particles scale over time |
+
+### Particle
+![object properties](./screenshots/particle.png)
+| Property name | Description |
+|---------------|-------------|
+| **Image** | particle's image |
+| **Scale** | particle's scale |
+| **Speed** | particle's speed |
+| **Lifespan** | particle's lifespan (measured in seconds) |
+| **Emission color** | particle's emission color |
+| **Emission radius** | particle's emission radius (measured in pixels) |
