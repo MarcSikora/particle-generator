@@ -6,17 +6,17 @@ In order to understand how the app works, please watch short Preview below:
 
 ## Preview
 
-//video here
-
+https://user-images.githubusercontent.com/93472358/141620347-52b50789-f0e7-47b5-bd3c-64df268f3fc1.mp4
 
 ## Structure
 
 ![default described](./screenshots/default_described.png)
 
-![main buttons](./screenshots/main_buttons.png)
+
 
 **Main Buttons** - buttons for main operations (in order from left to right):
 
+![main buttons](./screenshots/main_buttons.png)
 * **Play/Pause** - controls whether particles should be generating/moving
 * **Add particle system** - adds new ParticleSystem to display
 * **Add object** - adds new Object2D to display
@@ -37,15 +37,26 @@ In order to understand how the app works, please watch short Preview below:
 
 ![manual](./screenshots/manual.png)
 
-**LMB** - grab/move/select object
+| Key | Description |
+|-----|-------------|
+| **LMB** | grab/move/select object |
+| **D** | duplicate object |
+| **X** | remove object |
+| **W** | move object layer up |
+| **S** | move object layer down |
 
-**D** - duplicate object
+## Background Properties
+![background properties](./screenshots/background.png)
+| Property name | Description |
+|---------------|-------------|
+| **Color** | changes background color |
+| **Image** | changes background image |
 
-**X** - remove object
+## Object2D Properties
 
-**W** - move object layer up
-
-**S** - move object layer down
-
-
-
+### General
+![object properties](./screenshots/object.png)
+| Property name | Description |
+|---------------|-------------|
+| **Type** | changes object's type(image) |
+| **Scale** | changes object's scale |
