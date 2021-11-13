@@ -100,3 +100,11 @@ https://user-images.githubusercontent.com/93472358/141620347-52b50789-f0e7-47b5-
 | **Lifespan** | particle's lifespan (measured in seconds) |
 | **Emission color** | particle's emission color |
 | **Emission radius** | particle's emission radius (measured in pixels) |
+
+
+## Examples
+
+![example_4](https://user-images.githubusercontent.com/93472358/141646695-5cbc7f81-6166-4016-bf4a-731b95e51b10.png)
+![example_5](https://user-images.githubusercontent.com/93472358/141646696-d60fbca5-f69d-4b3b-bfbd-45aeea81b9fa.png)
+![example_6](https://user-images.githubusercontent.com/93472358/141646697-017289fc-2b99-4ebb-9e90-985dbed3cc63.png)
+![example_1](https://user-images.githubusercontent.com/93472358/141646693-22996d7f-3ce8-429f-8002-aec8081d44fd.png)
